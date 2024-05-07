@@ -1,0 +1,15 @@
+<span class="load" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</span>
+
+<h1>Bejelentkezés:</h1>
+<div>
+  <mat-form-field><mat-label for="uname"> Email-cím: </mat-label><br>
+    <input matInput type="email" id="uname" [formControl]="uname"></mat-form-field><br>
+  <mat-form-field><mat-label for="psw">Jelszó: </mat-label><br>
+    <input matInput type="password" id="psw" [formControl]="psw"></mat-form-field><br><br>
+  <span><button mat-raised-button color="accent" (click)="login()">Bejelentkezés</button></span>
+  <span><button mat-raised-button color="primary" [routerLink]="'/registration'">Regisztráció</button></span>
+</div>
+<br>
+

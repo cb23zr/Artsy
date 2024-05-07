@@ -1,0 +1,49 @@
+<div class="main_component div-flex">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Profil: </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p><mat-icon>email</mat-icon>pelda@gmail.com</p>
+      
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <form [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
+                <div class="text-center">
+                    <img [src]="imgSrc" width="350px" height="250px" (click)="fileUploader.click()">
+                </div>
+                <div class="form-group">
+                    <label>Select file</label>
+                    <input type="file" class="form-control" accept="image/*" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
+                    <div class="text-danger" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">This field is required!</div>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" formControlName="caption" placeholder="Caption">
+                    <div class="text-danger" *ngIf="isSubmitted && formControls.caption.errors?.['required']">This field is required!</div>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" formControlName="category">
+                        <option value="Animal">Animal</option>
+                        <option value="Person">Person</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <a routerLink="/main" class="btn">Menj a főoldalra</a>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success float-right">Submit</button>
+                    </div>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
