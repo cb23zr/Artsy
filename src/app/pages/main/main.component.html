@@ -1,0 +1,11 @@
+<div id="udv">
+  <h1> Üdvözöllek az oldalon!</h1>
+</div>
+<div class="br"></div>
+
+
+<mat-card>
+  <div class="image-container">
+    <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url)">
+  </div>
+</mat-card>

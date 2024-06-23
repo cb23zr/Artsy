@@ -1,0 +1,49 @@
+<div class="main_component div-flex">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Profil: </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p><mat-icon>email</mat-icon>pelda@gmail.com</p>
+            <form class="img-upload" [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
+                <div class="placeholder-div">
+                    <img id="placeholder" [src]="imgSrc" width="350px" height="250px" (click)="fileUploader.click()">
+                </div>
+                <div class="form-group">
+                    <input style="display: none;" type="file" class="form-control" accept="image/*" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
+                    <button mat-raised-button color="primary" type="button" (click)="fileUploader.click()">Fájl kiválasztása</button>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">This field is required!</div>
+                </div><br>
+                <div class="form-group">
+                <mat-form-field>
+                    <input matInput class="form-control" formControlName="caption" placeholder="Caption">
+                </mat-form-field>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.caption.errors?.['required']">This field is required!</div>
+                </div>
+                <div class="form-group">
+                    <mat-form-field >
+                    <mat-select  class="category" formControlName="category">
+                        <mat-option class="custom-selected-option" value="Animal">Animal</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Person</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+            
+                <div class="form-ro">
+                    <div class="buttons">
+                        <a style="display: none;" routerLink="/main" class="btn" #frontPage>Menj a főoldalra</a>
+                        <button mat-raised-button color="accent" type="button" (click)="frontPage.click()">Főoldal</button>
+                        <button mat-raised-button color="accent" type="submit" class="btn btn-success float-right">Feltöltés</button><br>
+                       
+                    </div>
+                </div>
+             
+            </form>
+            
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
+

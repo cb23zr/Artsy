@@ -1,0 +1,49 @@
+<div>
+  <h1>Regisztráció:</h1>
+  <form [formGroup]="signupForm" (ngSubmit)="OnSubmit()" >
+    <control-error class="error-message" controlName="username" />
+    <mat-form-field>
+      <mat-label> Felhasználónév: </mat-label><br>
+      <input matInput type="text" id="username" name="username" formControlName="username"><br>
+    </mat-form-field>
+    <control-error class="error-message" controlName="email" />
+    <mat-form-field>
+      <mat-label> Email cím: </mat-label><br>
+      <input matInput type="email" id="email" name="email" formControlName="email"><br>
+    </mat-form-field>
+    <control-error class="error-message" controlName="lname" />
+      <mat-form-field>
+        <mat-label> Vezetéknév: </mat-label><br>
+        <input matInput type="text" id="lname" name="lname" formControlName="lname"><br>
+      </mat-form-field>
+      <control-error class="error-message" controlName="fname" />
+      <mat-form-field>
+        <mat-label> Keresztnév: </mat-label><br>
+        <input matInput type="text" id="fname" name="fname" formControlName="fname"><br>
+      </mat-form-field>
+    <control-error class="error-message" controlName="psw"/>
+    <mat-form-field>
+      <mat-label>Jelszó: </mat-label><br>
+      <input matInput type="password" id="psw" name="psw" formControlName="psw"><br>
+    </mat-form-field>
+    <control-error class="error-message" controlName="repsw" />
+    <div class="error-message" *ngIf="signupForm?.errors?.['mismatch'] && signupForm?.touched">
+      A jelszavak nem egyeznek
+    </div>
+    <mat-form-field>
+      <mat-label>Jelszó megerősítés: </mat-label><br>
+      <input matInput type="password" id="repsw" name="repsw" formControlName="repsw"><br><br>
+    </mat-form-field>
+
+    <span class="button">
+    <span>
+    <button mat-raised-button color="accent" type="submit">Regisztráció</button>
+    </span>
+  <span>
+    <button mat-raised-button color="primary" (click)="Back()">Vissza</button>
+  </span>
+  </span>
+  </form>
+</div>
+<br><br>
+
