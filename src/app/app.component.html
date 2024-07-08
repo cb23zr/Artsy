@@ -13,9 +13,15 @@
         <ul class="menu" fxLayout fxLayoutGap="10px">
           <li><a routerLink="/main">Főoldal</a></li>
           <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
-          <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logOut()">Kijelentkezés</a></li>
           <li *ngIf="!(loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
           <li *ngIf="loggedInUser"><a routerLink="/profile">Profil</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logOut()">Kijelentkezés</a></li>
+          <div class="search-bar-container">
+            <button mat-icon-button>
+              <mat-icon>search</mat-icon>
+            </button>
+            <input id="search-input" placeholder="Keresés">
+          </div>
         </ul>
       </div>
       <div><img src="assets/articon.png" height="70" width="70"></div>

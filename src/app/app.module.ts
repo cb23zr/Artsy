@@ -22,6 +22,8 @@ import {MatCardModule} from "@angular/material/card";
 import { HttpClientModule } from '@angular/common/http';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SearchBarComponent } from './shared/search-bar/search-bar.component';
+
 
 
 
@@ -29,6 +31,7 @@ import { MatDialogModule } from '@angular/material/dialog';
   declarations: [
     AppComponent,
     MenuComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,

@@ -26,7 +26,9 @@ export class ProfileComponent implements OnInit{
     caption: new FormControl("", Validators.required),
     category: new FormControl(""),
     imageUrl: new FormControl("",Validators.required),
-    username: new FormControl("")
+    username: new FormControl(""),
+    favCount: new FormControl("0"),
+    favUsers: new FormControl(''),
 
 });
 
@@ -73,7 +75,10 @@ onSubmit(formValue: any){
         const randomId = this.generateUniqueId(formValue.caption);
         formValue['imageurl'] = url;
         formValue['id'] = randomId;
+        formValue['favCount'] = 0;
+        formValue['favUsers'] = [];
         this.service.insertImageDetails(formValue);
+        this.service.addToUploads(randomId,this.user.username);
         this.resetForm(); 
       });
     }).catch((error) => {
@@ -94,7 +99,9 @@ resetForm(){
     caption:'',
     imageUrl:'',
     category:'Person',
-    username: ''
+    username: '',
+    favCount: '',
+    favUsers: '',
   })
   this.imgSrc= 'assets/placeholder.jpg';
   this.selectedImage= null;
@@ -105,6 +112,10 @@ generateUniqueId(caption: string): string {
   const randomNum = Math.floor(Math.random() * 1000000); 
   const sanitizedCaption = caption.replace(/\s+/g, '_').toLowerCase();
   return `${sanitizedCaption}_${randomNum}`;
+}
+
+onDelete(){
+  
 }
 
 }

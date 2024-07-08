@@ -4,6 +4,8 @@ export interface User{
   email: string;
   lname: string;
   fname: string;
-
+  favorites: [];
+  uploads: [];
+  comments: [];
 }
 

@@ -5,10 +5,11 @@
     </mat-card-header>
 
     <mat-card-content>
-      <p><mat-icon>email</mat-icon>pelda@gmail.com</p>
+        <p><mat-icon>person</mat-icon>{{this.user.username }}</p>
+        <p><mat-icon>email</mat-icon>{{this.user.email }}</p>
             <form class="img-upload" [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
                 <div class="placeholder-div">
-                    <img id="placeholder" [src]="imgSrc" width="350px" height="250px" (click)="fileUploader.click()">
+                    <img id="placeholder" [src]="imgSrc" width="250px" height="150px" (click)="fileUploader.click()">
                 </div>
                 <div class="form-group">
                     <input style="display: none;" type="file" class="form-control" accept="image/*" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
@@ -38,12 +39,8 @@
                        
                     </div>
                 </div>
-             
             </form>
-            
-
     </mat-card-content>
   </mat-card>
-
 </div>
 

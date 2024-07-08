@@ -3,6 +3,8 @@ import {NavigationEnd, Router} from '@angular/router';
 import {filter} from "rxjs";
 import {MatSidenav} from "@angular/material/sidenav";
 import {AuthService} from "./shared/services/auth.service";
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',

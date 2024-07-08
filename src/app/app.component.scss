@@ -18,3 +18,24 @@ mat-sidenav{
   width: 200px;
 }
 
+:host{
+  display: block;
+}
+
+.search-bar-container{
+  padding: 0px 56px 0px 8px;
+  background: #2e0940;
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+}
+
+#search-input{
+  font-size: 1.1rem;
+  outline: none;
+  border: none;
+  background: inherit;
+  min-width: 352px;
+  color: white;
+}
+

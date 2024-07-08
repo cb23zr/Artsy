@@ -26,6 +26,9 @@ export class RegistrationComponent {
       repsw: ['', Validators.required],
       lname: ['', Validators.required],
       fname: ['', Validators.required],
+      favorites: [''],
+      uploads:[''],
+      comments:[],
     },
     {
       validator: this.passwordMatchValidator,
@@ -51,6 +54,9 @@ export class RegistrationComponent {
           email: this.signupForm.get('email')?.value,
           fname: this.signupForm.get('fname')?.value,
           lname: this.signupForm.get('lname')?.value,
+          favorites: [],
+          uploads: [],
+          comments:[],
         };
         this.userService.create(user)
       }
