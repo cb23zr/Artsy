@@ -4,7 +4,7 @@ import {MainComponent} from "./main.component";
 
 const routes: Routes = [
   { path: '', component: MainComponent },
-   { path: 'popup', loadChildren: () => import('./popup/popup.module').then(m => m.PopupModule) },
+  { path: 'popup', loadChildren: () => import('./popup/popup.module').then(m => m.PopupModule) },
 ];
 
 @NgModule({

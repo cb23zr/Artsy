@@ -52,10 +52,11 @@ export class MainComponent implements OnInit{
       documents.forEach((doc)=>{
         const url= doc.get("imageurl"); 
         const id = doc.get('id');
+        const name = doc.get('username');
         if(url){
-          this.imageList.push({id,url});
+          this.imageList.push({id,url,name});
         }
-        console.log({id,url});
+        console.log({id,url,name});
       })
       } catch (error) {
       console.error('Hiba a FireStore dokumentumok lekérése közben:', error);
@@ -71,11 +72,11 @@ export class MainComponent implements OnInit{
     return formGroup;
   }
 
-  openDialog(id: string, imageurl:string): void {
+  openDialog(id: string, imageurl:string, name: string): void {
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if(user){
     const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: this.name, imageUrl: imageurl},
+      data: {id: id ,name: name, imageUrl: imageurl},
     });
 
     dialogRef.afterClosed().subscribe(result => {

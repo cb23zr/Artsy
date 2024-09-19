@@ -1,0 +1,46 @@
+<div class="main_component div-flex">
+    <mat-card>
+        <mat-card-content>
+            <form class="img-upload" [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
+                <div class="placeholder-div">
+                    <img id="placeholder" [src]="imgSrc" width="250px" height="150px" (click)="fileUploader.click()">
+                </div>
+                <div class="form-group">
+                    <input style="display: none;" type="file" class="form-control" accept="image/*" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
+                    <button mat-raised-button color="primary" type="button" (click)="fileUploader.click()">Fájl kiválasztása</button>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">This field is required!</div>
+                </div><br>
+                <div class="form-group">
+                <mat-form-field>
+                    <input matInput class="form-control" formControlName="caption" placeholder="Caption">
+                </mat-form-field>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.caption.errors?.['required']">This field is required!</div>
+                </div>
+                <div class="form-group">
+                    <mat-form-field >
+                    <mat-select  class="category" formControlName="category">
+                        <mat-option class="custom-selected-option" value="Animal">Animal</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Person</mat-option>
+                        <mat-option class="custom-selected-option" value="Nature">Nature</mat-option>
+                        <mat-option class="custom-selected-option" value="Fantasy">Fantasy</mat-option>
+                        <mat-option class="custom-selected-option" value="Object">Object</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Abstract</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Else</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-ro">
+                    <div class="buttons">
+                        <a style="display: none;" routerLink="/main" class="btn" #frontPage>Menj a főoldalra</a>
+                        <button mat-raised-button color="accent" type="button" (click)="frontPage.click()">Főoldal</button>
+                        <button mat-raised-button color="accent" type="submit" class="btn btn-success float-right">Feltöltés</button><br>
+                    
+                    </div>
+                </div>
+            </form>
+            <button mat-button routerLink="/profile">Vissza</button>
+        </mat-card-content>
+    </mat-card>
+</div>
+

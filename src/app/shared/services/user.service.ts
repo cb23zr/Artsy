@@ -4,6 +4,7 @@ import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, 
 import { environment } from 'src/environments/environment';
 import { User } from '../models/User';
 import { Observable, from, map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class UserService {
   app = initializeApp(environment.firebase);
   db = getFirestore(this.app);
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   async create(user: User): Promise<void> {
     try {
@@ -21,6 +22,25 @@ export class UserService {
       console.error('Hiba a user dokumentum készítése közben:', error);
       throw error;
     }
+  }
+
+  async getByUsername(username: string) {
+    const userRef = collection(this.db, 'users');
+    const q = query(userRef, where('username', '==', username));
+    
+    return from(getDocs(q).then(querySnapshot => {
+      if (querySnapshot.empty) {
+        console.log('No matching documents.');
+        return null;
+      }
+      const userDoc = querySnapshot.docs[0];
+      return userDoc.data() as User;
+    }).catch(error => {
+      console.error('Error getting documents: ', error);
+      return null;
+    }));
+    
+
   }
 
   async getById(id:string): Promise<User | undefined>{

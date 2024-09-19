@@ -11,7 +11,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/registration/registration.module').then(m => m.RegistrationModule)},
   { path: 'profile',
     loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
-    canActivate:[AuthGuard]
   },
     
   { path: 'not-found',
@@ -19,6 +18,8 @@ const routes: Routes = [
   { path:'', redirectTo:'/main', pathMatch:'full'},
   { path: 'error', loadChildren: () => import('./pages/error/error.module').then(m => m.ErrorModule) },
   { path: 'loginpopup', loadChildren: () => import('./pages/login-popup/login-popup.module').then(m => m.LoginPopupModule) },
+  { path: 'upload-image', loadChildren: () => import('./pages/profile/upload-image/upload-image.module').then(m => m.UploadImageModule) },
+  
   { path:'**', redirectTo:'/not-found',}
 ];
 

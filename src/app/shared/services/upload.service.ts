@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UploadService {
 
+
   collection:any;
   q: any;
   app = initializeApp(environment.firebase);

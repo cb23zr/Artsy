@@ -5,6 +5,9 @@ import { getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { UploadService } from 'src/app/shared/services/upload.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { User } from 'src/app/shared/models/User';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupComponent } from 'src/app/pages/main/popup/popup.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -14,13 +17,10 @@ import { User } from 'src/app/shared/models/User';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit{
-
-  imgSrc : string = 'assets/placeholder.jpg';
-  selectedImage:any = null;
-  isSubmitted: boolean = false;
-  storage = getStorage();
+  name!: string;
   user!: User;
-  
+  imageList!: any[];
+
   formTemplate = new FormGroup({
     id: new FormControl(""),
     caption: new FormControl("", Validators.required),
@@ -29,93 +29,59 @@ export class ProfileComponent implements OnInit{
     username: new FormControl(""),
     favCount: new FormControl("0"),
     favUsers: new FormControl(''),
+})
 
-});
 
+constructor(public dialog: MatDialog, private userService: UserService,private service: UploadService, private route: ActivatedRoute,) {}
 
-constructor(private service: UploadService, private userService: UserService) {}
+  async ngOnInit(){
 
-ngOnInit(){
-  this.resetForm();
-
-  const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
-  this.userService.getByIdObservable(user.uid).subscribe(data => {
-    console.log(data);
-    if (data) {
-      this.user = data;
-      this.formTemplate.get('username')?.setValue(this.user.username);
-      }
-    },error =>{
-      console.error(error);
+    this.route.params.subscribe(params => {
+      this.name = params['username'];
     });
-}
-
-
-
-showPreview(event: any){
-  if(event.target.files && event. target.files[0]){
-    const reader = new FileReader();
-    reader.onload = (e:any) => this.imgSrc = e.target.result;
-    reader.readAsDataURL(event.target.files[0]);
-    this.selectedImage = event.target.files[0];
-  }else if(!event.target.files && this.selectedImage) {
-    this.imgSrc = 'assets/plchldr.jpg';
-    this.selectedImage = null;
-  }
-}
-
-onSubmit(formValue: any){
-  this.isSubmitted = true;
-  if(this.formTemplate.valid){
-    var filePath = `${formValue.category}/${this.selectedImage.name.split('.').slice(0,-1).join('.')}_${new Date().getTime()}`;
-    var storageRef = ref(this.storage,filePath);
-    var uploadTask = uploadBytesResumable(storageRef,this.selectedImage).then((snapshot) =>{
-      console.log('Fájl feltöltve:', snapshot);
-      getDownloadURL(storageRef).then((url)=>{
-        const randomId = this.generateUniqueId(formValue.caption);
-        formValue['imageurl'] = url;
-        formValue['id'] = randomId;
-        formValue['favCount'] = 0;
-        formValue['favUsers'] = [];
-        this.service.insertImageDetails(formValue);
-        this.service.addToUploads(randomId,this.user.username);
-        this.resetForm(); 
-      });
-    }).catch((error) => {
-      console.error("Hiba a fájl feltöltésekor:", error);
-    });
-
-  }
-}
-
-get formControls(){
-  return this.formTemplate['controls'];
-}
-
-resetForm(){
-  this.formTemplate.reset();
-  this.formTemplate.setValue({
-    id:'',
-    caption:'',
-    imageUrl:'',
-    category:'Person',
-    username: '',
-    favCount: '',
-    favUsers: '',
-  })
-  this.imgSrc= 'assets/placeholder.jpg';
-  this.selectedImage= null;
-  this.isSubmitted = false;
-}
-
-generateUniqueId(caption: string): string {
-  const randomNum = Math.floor(Math.random() * 1000000); 
-  const sanitizedCaption = caption.replace(/\s+/g, '_').toLowerCase();
-  return `${sanitizedCaption}_${randomNum}`;
-}
-
-onDelete(){
   
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+
+      this.userService.getByIdObservable(user.uid).subscribe(data => {
+        if (data) {
+          this.user = data;
+          this.formTemplate.get('username')?.setValue(this.user.username);
+          console.log(this.user.username);
+        }
+      }, error => {
+        console.error(error);
+      });
+  
+    try {
+      const documents = await this.service.getDocuments();
+      this.imageList = [];
+      documents.forEach((doc) => {
+        const url = doc.get("imageurl");
+        const id = doc.get('id');
+        const uname = doc.get('username');
+        if (uname == this.user.username) {
+          if (url) {
+            this.imageList.push({ id, url });
+            console.log({ id, url });
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Hiba a FireStore dokumentumok lekérése közben:', error);
+    }
+}
+
+openDialog(id: string, imageurl:string): void {
+  const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+  if(user){
+  const dialogRef = this.dialog.open(PopupComponent, {
+    data: {id: id ,name: this.name, imageUrl: imageurl},
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed', result);
+  });
+  }
 }
 
 }

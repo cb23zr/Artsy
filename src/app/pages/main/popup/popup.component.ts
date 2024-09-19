@@ -14,6 +14,7 @@ import { User } from 'src/app/shared/models/User';
 import { CommentService } from 'src/app/shared/services/comment.service';
 import { FavoriteService } from 'src/app/shared/services/favorite.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { Router } from '@angular/router';
 
 export interface DialogData {
   id: string;
