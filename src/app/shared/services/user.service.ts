@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from '@angular/fire/app';
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, where } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/User';
 import { Observable, from, map } from 'rxjs';
@@ -24,7 +24,7 @@ export class UserService {
     }
   }
 
-  async getByUsername(username: string) {
+  getByUsername(username: string): Observable<User | null> {
     const userRef = collection(this.db, 'users');
     const q = query(userRef, where('username', '==', username));
     
@@ -39,7 +39,6 @@ export class UserService {
       console.error('Error getting documents: ', error);
       return null;
     }));
-    
 
   }
 
@@ -66,15 +65,18 @@ export class UserService {
     );
   }
 
-  getAll(){
-
-  }
 
   update(){
 
   }
 
-  delete(){
+  async delete(userId: string){
+    try{
+      await deleteDoc(doc(this.db, 'users', userId));
+    } catch{
+      console.log("Hiba a felhasználó törlésénél");
+    }
+    
 
   }
 }

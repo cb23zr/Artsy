@@ -10,6 +10,8 @@ const routes: Routes = [
   { path: 'registration',
     loadChildren: () => import('./pages/registration/registration.module').then(m => m.RegistrationModule)},
   { path: 'profile',
+     loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule) },
+  { path: 'profile/:username',
     loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
   },
     
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'error', loadChildren: () => import('./pages/error/error.module').then(m => m.ErrorModule) },
   { path: 'loginpopup', loadChildren: () => import('./pages/login-popup/login-popup.module').then(m => m.LoginPopupModule) },
   { path: 'upload-image', loadChildren: () => import('./pages/profile/upload-image/upload-image.module').then(m => m.UploadImageModule) },
+  { path: 'following', loadChildren: () => import('./pages/profile/following/following.module').then(m => m.FollowingModule) },
+  { path: 'follower', loadChildren: () => import('./pages/profile/follower/follower.module').then(m => m.FollowerModule) },
   
   { path:'**', redirectTo:'/not-found',}
 ];

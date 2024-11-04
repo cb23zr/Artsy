@@ -1,6 +1,7 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
-    <app-menu (kivalasztottOldal)="oldalValtas($event)" [currentPage]="page" *ngIf="page" (onCloseSidenav)="onClose($event,sidenav)" [loggedInUser]="loggedInUser" (onLogout)="logOut($event)"></app-menu>
+    <app-menu (kivalasztottOldal)="oldalValtas($event)" [currentPage]="page" *ngIf="page"
+    (onCloseSidenav)="onClose($event,sidenav)" [loggedInUser]="loggedInUser" (onLogout)="logout($event)"></app-menu>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
@@ -14,8 +15,8 @@
           <li><a routerLink="/main">Főoldal</a></li>
           <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
           <li *ngIf="!(loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
-          <li *ngIf="loggedInUser"><a routerLink="/profile">Profil</a></li>
-          <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logOut()">Kijelentkezés</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/profile" (click)="login()">Profil</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
           <div class="search-bar-container">
             <button mat-icon-button>
               <mat-icon>search</mat-icon>

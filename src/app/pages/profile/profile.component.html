@@ -5,13 +5,21 @@
     </mat-card-header>
 
     <mat-card-content *ngIf="user">
+        <button *ngIf="!loggedinprofile" mat-flat-button (click)="follow()">{{isFollowed ? 'Követés visszavonása':'Követés'}}</button>
+        <div (click)="openFollowerDialog()">
+          Követők:{{ followerCount }}
+        </div>
+        <div (click)="openFollowingDialog()">
+          Követések:{{ followingCount }}
+        </div>
         <p><mat-icon>person</mat-icon>{{user.username }}</p>
         <p><mat-icon>email</mat-icon>{{user.email }}</p>
-        <button mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">Kép feltöltés</button>
+        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">Kép feltöltés</button>
 
         <div class="image-container">
           <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url)">
         </div>
+        <button mat-button (click)="deleteProfile()">Profil törlése</button>
     </mat-card-content>
   </mat-card>
 </div>

@@ -29,6 +29,10 @@ export class RegistrationComponent {
       favorites: [''],
       uploads:[''],
       comments:[],
+      followerCount: [],
+      followingCount:[],
+      following:[],
+      folloedby: [],
     },
     {
       validator: this.passwordMatchValidator,
@@ -57,6 +61,11 @@ export class RegistrationComponent {
           favorites: [],
           uploads: [],
           comments:[],
+          followerCount:0,
+          followingCount:0,
+          following:[],
+          followedby:[],
+
         };
         this.userService.create(user)
       }

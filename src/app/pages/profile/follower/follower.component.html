@@ -1,0 +1,18 @@
+<mat-dialog-content>
+    <div>Követők</div>
+    <div *ngIf="followerUsers.length > 0; else noFollowing">
+        <mat-list>
+          <mat-list-item *ngFor="let user of followerUsers">
+            <a [routerLink]="['/profile', user.username]" (click)="dialogRef.close()" mat-line>{{ user.username }}</a>
+            <button *ngIf="user.id === this.data.uid || this.data.own" mat-button (click)="delete(user.username)">Törlés</button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <ng-template #noFollowing>
+        <p>Még nincsenek követők</p>
+      </ng-template>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Vissza</button>
+</mat-dialog-actions>

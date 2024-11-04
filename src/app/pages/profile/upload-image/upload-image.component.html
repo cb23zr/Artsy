@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </form>
-            <button mat-button routerLink="/profile">Vissza</button>
+            <button mat-button [routerLink]="['/profile',user.username]">Vissza</button>
         </mat-card-content>
     </mat-card>
 </div>

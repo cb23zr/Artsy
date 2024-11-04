@@ -69,9 +69,9 @@ export class UploadImageComponent {
   onSubmit(formValue: any){
     this.isSubmitted = true;
     if(this.formTemplate.valid){
-      var filePath = `${formValue.category}/${this.selectedImage.name.split('.').slice(0,-1).join('.')}_${new Date().getTime()}`;
-      var storageRef = ref(this.storage,filePath);
-      var uploadTask = uploadBytesResumable(storageRef,this.selectedImage).then((snapshot) =>{
+      const filePath = `${formValue.category}/${this.selectedImage.name.split('.').slice(0,-1).join('.')}_${new Date().getTime()}`;
+      const storageRef = ref(this.storage,filePath);
+      uploadBytesResumable(storageRef,this.selectedImage).then((snapshot) =>{
         console.log('Fájl feltöltve:', snapshot);
         getDownloadURL(storageRef).then((url)=>{
           const randomId = this.generateUniqueId(formValue.caption);

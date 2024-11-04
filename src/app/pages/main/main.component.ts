@@ -56,7 +56,6 @@ export class MainComponent implements OnInit{
         if(url){
           this.imageList.push({id,url,name});
         }
-        console.log({id,url,name});
       })
       } catch (error) {
       console.error('Hiba a FireStore dokumentumok lekérése közben:', error);
@@ -81,20 +80,26 @@ export class MainComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      this.reloadData();
     });
     }else{
-      const dialogRef = this.dialog.open(LoginPopupComponent,{
-        
-      })
+      const dialogRef = this.dialog.open(LoginPopupComponent,{})
     }
   }
 
-  addComment(){
-    if(this.commentForm.valid) {
-      if (this.commentForm.get('uname') && this.commentForm.get('comment')) {
-        this.commentForm.get('date')?.setValue(new Date);
-        this.comments.push({...this.commentForm.value});
-      }
-    }
+  reloadData(): void {
+    this.service.getDocuments().then((documents) => {
+      this.imageList = [];
+      documents.forEach((doc) => {
+        const url = doc.get("imageurl");
+        const id = doc.get('id');
+        const name = doc.get('username');
+        if (url) {
+          this.imageList.push({ id, url, name });
+        }
+      });
+    }).catch(error => {
+      console.error('Error reloading documents:', error);
+    });
   }
 }

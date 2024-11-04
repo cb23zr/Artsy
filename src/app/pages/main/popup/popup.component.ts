@@ -14,7 +14,8 @@ import { User } from 'src/app/shared/models/User';
 import { CommentService } from 'src/app/shared/services/comment.service';
 import { FavoriteService } from 'src/app/shared/services/favorite.service';
 import { UserService } from 'src/app/shared/services/user.service';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
+import { UploadService } from 'src/app/shared/services/upload.service';
 
 export interface DialogData {
   id: string;
@@ -43,13 +44,16 @@ export class PopupComponent implements OnInit, OnChanges {
   displayedColumns: string[] = ['uname', 'comment', 'date', 'delete'];
   favCount: number = 0;
   isFavorite: boolean = false;
+  followers: string[] = [];
 
 
   constructor(
     public dialogRef: MatDialogRef<PopupComponent>,@Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialog: MatDialog, private commService: CommentService,
     private fb: FormBuilder, private userService: UserService,
-    private favService: FavoriteService
+    private favService: FavoriteService,
+    private uploadService: UploadService,
+    private router: Router
    ) {}
 
    ngOnChanges(): void {
@@ -90,12 +94,6 @@ export class PopupComponent implements OnInit, OnChanges {
     
    }
 
-  
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   createForm(model: Comment){
     let formGroup = this.fb.group(model);
     formGroup.get('uname')?.addValidators([Validators.required]);
@@ -120,6 +118,11 @@ export class PopupComponent implements OnInit, OnChanges {
     await this.commService.delete(this.user.id,commentId);
     this.comments = this.comments.filter(comment => comment.id !== commentId);
     console.log('Comment successfully removed!');
+  }
+
+  deletePic(){
+    this.uploadService.deleteImage(this.data.id, this.data.imageUrl);
+    this.onNoClick();
   }
 
   async onAddFavorit() {
@@ -155,5 +158,14 @@ export class PopupComponent implements OnInit, OnChanges {
   generateId(): string {
     return Math.random().toString(36).substr(2, 20);
   }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([currentUrl]);
+    });
+  }
+
 
 }

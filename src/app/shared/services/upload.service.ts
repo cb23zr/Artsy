@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, Query, QueryDocumentSnapshot, addDoc, arrayUnion, doc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+import { DocumentData, Firestore, Query, QueryDocumentSnapshot, addDoc, arrayUnion, deleteDoc, doc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { collection, getFirestore, setDoc } from 'firebase/firestore';
 import { AngularFireList } from '@angular/fire/compat/database';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from 'src/environments/environment';
+import { deleteObject, getStorage, ref } from '@angular/fire/storage';
 
 
 @Injectable({
@@ -16,6 +17,7 @@ export class UploadService {
   q: any;
   app = initializeApp(environment.firebase);
   db = getFirestore(this.app);
+  storage = getStorage();
 
   imageDetailList!: AngularFireList<any>;
 
@@ -53,6 +55,32 @@ export class UploadService {
       console.error("User not found");
     }
 
+  }
+
+  async deleteImage(imageId: string, imageRef: string){
+    try {
+      const imagesRef = collection(this.db, 'images');
+      const q = query(imagesRef, where('id', '==', imageId));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (document) => {
+          const docId = document.id;
+          await deleteDoc(doc(this.db, 'images', docId));
+          console.log("Sikeresen törölt kép a Collection-ből");
+        });
+      } else {
+        console.log("Nincs ilyen kép");
+      }
+    } catch (error) {
+      console.error('Hiba a kép törlése közben: ', error);
+    }
+
+    const desertRef = ref(this.storage, imageRef);
+    deleteObject(desertRef).then(() => {
+      console.log("Sikeres képeltávolítás a Storage-ból!");
+    }).catch((error) => {
+      console.log("Hiba: " + error);
+    });
   }
 
   
