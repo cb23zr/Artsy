@@ -6,6 +6,6 @@
 
 <mat-card>
   <div class="image-container">
-    <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url, image.name)">
+    <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url, image.name, image.date)">
   </div>
 </mat-card>

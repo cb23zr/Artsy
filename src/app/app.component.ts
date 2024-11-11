@@ -43,7 +43,6 @@ export class AppComponent implements OnInit{
     });
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
-      console.log(this.loggedInUser);
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
     },error =>{
       console.log(error);
@@ -93,7 +92,6 @@ export class AppComponent implements OnInit{
   login(){
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
-      console.log(this.loggedInUser);
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
     },error =>{
       console.log(error);

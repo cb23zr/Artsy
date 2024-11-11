@@ -38,8 +38,6 @@ export class FollowingComponent implements OnInit{
     });
   }
 
-  
-
   async delete(username: string){
     console.log(this.data.uid +" és following: "+ username);
     await this.followService.unFollow(this.data.uid, username);

@@ -80,13 +80,13 @@ export class CommentService {
   }
 
 
-  async delete(userName: string, commentId:string): Promise<void>{
+  async delete(userId: string, commentId:string): Promise<void>{
     console.log('Deleting comment with ID:', commentId);
-    console.log('For user:', userName);
+    console.log('For user:', userId);
     await deleteDoc(doc(this.db, "comments", commentId));
 
     const userRef = collection(this.db, "users");
-    const q = query(userRef, where('id', '==', userName));
+    const q = query(userRef, where('id', '==', userId));
     const userDocs = await getDocs(q);
 
     if (!userDocs.empty) {

@@ -35,11 +35,11 @@
                         <a style="display: none;" routerLink="/main" class="btn" #frontPage>Menj a főoldalra</a>
                         <button mat-raised-button color="accent" type="button" (click)="frontPage.click()">Főoldal</button>
                         <button mat-raised-button color="accent" type="submit" class="btn btn-success float-right">Feltöltés</button><br>
-                    
+                        <button *ngIf="user?.username" mat-button [routerLink]="['/profile',user.username]">Vissza</button>
                     </div>
                 </div>
             </form>
-            <button mat-button [routerLink]="['/profile',user.username]">Vissza</button>
+            
         </mat-card-content>
     </mat-card>
 </div>

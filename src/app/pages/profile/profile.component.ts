@@ -13,7 +13,8 @@ import { fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { FollowingService } from 'src/app/shared/services/following.service';
 import { FollowingComponent } from './following/following.component';
 import { FollowerComponent } from './follower/follower.component';
-import { Subscription, switchMap } from 'rxjs';
+import { async, Subscription, switchMap } from 'rxjs';
+import { doc, Timestamp } from '@angular/fire/firestore';
 
 
 
@@ -46,7 +47,6 @@ constructor(public dialog: MatDialog, private userService: UserService,
     this.routeParamsSub=this.route.params.subscribe(params => {
       this.name = params['username'];
       this.onNavigate(this.name);
-      console.log(this.name);
 
       const loggedin = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   
@@ -77,25 +77,26 @@ constructor(public dialog: MatDialog, private userService: UserService,
                 const url = doc.get("imageurl");
                 const id = doc.get('id');
                 const uname = doc.get('username');
+                const date = doc.get('date');
       
                 if (uname === this.user.username) {
                   if (url) {
-                    this.imageList.push({ id, url });
+                    this.imageList.push({ id, url, date});
                   }
                 }
               });
             } catch (error) {
-              console.error('Error fetching FireStore documents:', error);
+              console.error('Hiba: ', error);
               this.router.navigate(['/not-found']);
             }
           } else {
-            console.log('No user found for username:', this.name);
+            console.log('Nincs ilyen felhasználónév: ', this.name);
             this.router.navigate(['/not-found']);
             
           }
         },
         error => {
-          console.error('Error fetching user:', error);
+          console.error('Hiba: ', error);
         }
       )
 
@@ -159,11 +160,12 @@ loadDataByID(uid:string){
   });
 }
 
-openDialog(id: string, imageurl:string): void {
+openDialog(id: string, imageurl:string, date: Timestamp): void {
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
-  const dialogRef = this.dialog.open(PopupComponent, {
-    data: {id: id ,name: this.name, imageUrl: imageurl},
+    const actualDate =date.toDate();
+    const dialogRef = this.dialog.open(PopupComponent, {
+      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate},
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -225,7 +227,13 @@ async follow(){
 }
 
 deleteProfile(){
-  
+  /*
+  *
+  * to do
+  * 
+  */
+  this.userService.delete(this.user.id);
+
 }
 
 }

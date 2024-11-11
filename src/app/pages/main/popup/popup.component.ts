@@ -16,11 +16,13 @@ import { FavoriteService } from 'src/app/shared/services/favorite.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { Route, Router } from '@angular/router';
 import { UploadService } from 'src/app/shared/services/upload.service';
+import { Timestamp } from 'firebase/firestore';
 
 export interface DialogData {
   id: string;
   name: string;
   imageUrl: string;
+  date: Date;
 }
 
 @Component({
@@ -45,7 +47,7 @@ export class PopupComponent implements OnInit, OnChanges {
   favCount: number = 0;
   isFavorite: boolean = false;
   followers: string[] = [];
-
+;
 
   constructor(
     public dialogRef: MatDialogRef<PopupComponent>,@Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -63,12 +65,11 @@ export class PopupComponent implements OnInit, OnChanges {
    }
 
    ngOnInit(){
-
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
 
+    if(user){
     this.userService.getByIdObservable(user.uid).subscribe(async data => {
-      console.log(data);
-      if (data) {
+      if (data && data.username) {
         this.user = data;
         this.commentForm.get('uname')?.setValue(this.user.username);
         this.isFavorite = await this.favService.isFavorite(this.data.id, this.user.username);
@@ -76,6 +77,7 @@ export class PopupComponent implements OnInit, OnChanges {
       },error =>{
         console.error(error);
       });
+    }
 
       this.commService.comments$.subscribe(comments => {
         this.comments = comments.filter(comment => comment.imageId === this.data.id);
@@ -90,8 +92,8 @@ export class PopupComponent implements OnInit, OnChanges {
       });
 
       this.loadImageFavCount();
+
        
-    
    }
 
   createForm(model: Comment){
@@ -103,11 +105,16 @@ export class PopupComponent implements OnInit, OnChanges {
 
   addComment(){
   
-      if (this.commentForm.valid) {
+      if(this.commentForm.valid) {
         const commentData: Comment = this.commentForm.value as Comment;
         this.commService.create(commentData, this.user.username).then(() => {
           this.commentImg.push(commentData);
           console.log('Comment successfully created!');
+          this.commentForm.patchValue({
+            comment: '',
+            id: this.generateId(),  
+            date: new Date()         
+        });
         }).catch(error => {
           console.error('Error creating comment:', error);
         });
@@ -121,7 +128,16 @@ export class PopupComponent implements OnInit, OnChanges {
   }
 
   deletePic(){
-    this.uploadService.deleteImage(this.data.id, this.data.imageUrl);
+   for(const comment of this.comments){
+    this.userService.getByUsername(comment.uname).subscribe(data =>{
+      if(data){
+        const user = data;
+        this.commService.delete(user.id,comment.id);
+      }
+    })
+   }
+
+    this.uploadService.deleteImage(this.data.id, this.data.imageUrl, this.user.id);
     this.onNoClick();
   }
 
@@ -144,8 +160,6 @@ export class PopupComponent implements OnInit, OnChanges {
     }
   }
 
-
-
   async loadImageFavCount() {
     try {
       const favCount = await this.favService.getImageFavCount(this.data.id);
@@ -166,6 +180,8 @@ export class PopupComponent implements OnInit, OnChanges {
         this.router.navigate([currentUrl]);
     });
   }
+
+  
 
 
 }

@@ -17,9 +17,9 @@
         <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">Kép feltöltés</button>
 
         <div class="image-container">
-          <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url)">
+          <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.date)">
         </div>
-        <button mat-button (click)="deleteProfile()">Profil törlése</button>
+        <button *ngIf="ownProfile" mat-button (click)="deleteProfile()">Profil törlése</button>
     </mat-card-content>
   </mat-card>
 </div>

@@ -29,6 +29,7 @@ export class UploadImageComponent {
     username: new FormControl(""),
     favCount: new FormControl("0"),
     favUsers: new FormControl(''),
+    date: new FormControl(""),
 
 });
 
@@ -48,7 +49,7 @@ export class UploadImageComponent {
       if (data) {
         this.user = data;
         this.formTemplate.get('username')?.setValue(this.user.username);
-        }
+      }
       },error =>{
         console.error(error);
       });
@@ -79,6 +80,7 @@ export class UploadImageComponent {
           formValue['id'] = randomId;
           formValue['favCount'] = 0;
           formValue['favUsers'] = [];
+          formValue['date'] = new Date();
           this.service.insertImageDetails(formValue);
           this.service.addToUploads(randomId,this.user.username);
           this.resetForm(); 
@@ -104,6 +106,7 @@ export class UploadImageComponent {
       username: '',
       favCount: '',
       favUsers: '',
+      date: '',
     })
     this.imgSrc= 'assets/placeholder.jpg';
     this.selectedImage= null;
@@ -114,10 +117,6 @@ export class UploadImageComponent {
     const randomNum = Math.floor(Math.random() * 1000000); 
     const sanitizedCaption = caption.replace(/\s+/g, '_').toLowerCase();
     return `${sanitizedCaption}_${randomNum}`;
-  }
-  
-  onDelete(){
-    
   }
 
 

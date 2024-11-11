@@ -6,5 +6,6 @@ export interface Image{
     username: string;
     favCount: number;
     favUsers: [];
+    date: Date;
   
   }

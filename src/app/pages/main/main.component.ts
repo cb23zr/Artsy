@@ -14,6 +14,7 @@ import {
 } from '@angular/material/dialog';
 import { PopupComponent } from './popup/popup.component';
 import { LoginPopupComponent } from '../login-popup/login-popup.component';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-main',
@@ -25,7 +26,7 @@ export class MainComponent implements OnInit{
   unsub: any;
 
   animal: string | undefined;
-  name!: string;
+  
 
   imageList!: any[];
   rowIndexArray!: any[];
@@ -53,8 +54,9 @@ export class MainComponent implements OnInit{
         const url= doc.get("imageurl"); 
         const id = doc.get('id');
         const name = doc.get('username');
+        const date = doc.get('date');
         if(url){
-          this.imageList.push({id,url,name});
+          this.imageList.push({id,url,name, date});
         }
       })
       } catch (error) {
@@ -71,15 +73,16 @@ export class MainComponent implements OnInit{
     return formGroup;
   }
 
-  openDialog(id: string, imageurl:string, name: string): void {
+  openDialog(id: string, imageurl:string, name: string, date: Timestamp): void {
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
-    if(user){
-    const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: name, imageUrl: imageurl},
+    if (user && name !== undefined) {
+      const actualDate =date.toDate();
+      const dialogRef = this.dialog.open(PopupComponent, {
+      data: {id: id ,name: name, imageUrl: imageurl, date:actualDate},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      console.log('A dialog be lett zárva', result);
       this.reloadData();
     });
     }else{
@@ -94,12 +97,13 @@ export class MainComponent implements OnInit{
         const url = doc.get("imageurl");
         const id = doc.get('id');
         const name = doc.get('username');
+        const date = doc.get('date');
         if (url) {
-          this.imageList.push({ id, url, name });
+          this.imageList.push({ id, url, name, date });
         }
       });
     }).catch(error => {
-      console.error('Error reloading documents:', error);
+      console.error('Hiba újratöltés közben:', error);
     });
   }
 }
