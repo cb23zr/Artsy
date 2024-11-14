@@ -26,13 +26,6 @@ export class RegistrationComponent {
       repsw: ['', Validators.required],
       lname: ['', Validators.required],
       fname: ['', Validators.required],
-      favorites: [''],
-      uploads:[''],
-      comments:[],
-      followerCount: [],
-      followingCount:[],
-      following:[],
-      folloedby: [],
     },
     {
       validator: this.passwordMatchValidator,
@@ -65,6 +58,7 @@ export class RegistrationComponent {
           followingCount:0,
           following:[],
           followedby:[],
+          intro:"",
 
         };
         this.userService.create(user)
@@ -82,7 +76,6 @@ export class RegistrationComponent {
   passwordMatchValidator(control: AbstractControl){
     const password = control.get('psw')?.value;
     const confirmPsw = control.get('repsw')?.value;
-
     return password === confirmPsw ? null : { mismatch: true };
   }
 

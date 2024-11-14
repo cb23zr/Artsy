@@ -73,8 +73,9 @@ export class UserService {
   }
 
 
-  update(){
-
+  update(userId: string, intro: string){
+    const userDoc = doc(this.db, 'users', userId);
+    return updateDoc(userDoc, { intro: intro });
   }
 
   async delete(userId: string){
@@ -110,8 +111,8 @@ export class UserService {
         for(const username of following){
             this.getByUsername(username).subscribe(async (fetchedUser) =>{
               if (fetchedUser) {
+
                 const userDoc = doc(this.db,"users", fetchedUser.id);
-                
                 await updateDoc(userDoc, {
                   followedby: arrayRemove(userId),
                   followerCount: increment(-1)

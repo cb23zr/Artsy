@@ -15,6 +15,7 @@ import { FollowingComponent } from './following/following.component';
 import { FollowerComponent } from './follower/follower.component';
 import { async, Subscription, switchMap } from 'rxjs';
 import { doc, Timestamp } from '@angular/fire/firestore';
+import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 
 
 
@@ -78,10 +79,11 @@ constructor(public dialog: MatDialog, private userService: UserService,
                 const id = doc.get('id');
                 const uname = doc.get('username');
                 const date = doc.get('date');
+                const caption = doc.get('caption');
       
                 if (uname === this.user.username) {
                   if (url) {
-                    this.imageList.push({ id, url, date});
+                    this.imageList.push({ id, url, date, caption});
                   }
                 }
               });
@@ -160,12 +162,12 @@ loadDataByID(uid:string){
   });
 }
 
-openDialog(id: string, imageurl:string, date: Timestamp): void {
+openDialog(id: string, imageurl:string, date: Timestamp, caption: string): void {
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
     const actualDate =date.toDate();
     const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate},
+      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate, caption: caption},
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -202,7 +204,6 @@ openFollowerDialog(){
   }
 }
 
-
 async follow(){
   const loggedin = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if (this.user) {
@@ -227,13 +228,20 @@ async follow(){
 }
 
 deleteProfile(){
-  /*
-  *
-  * to do
-  * 
-  */
   this.userService.delete(this.user.id);
+}
 
+updateIntro(userId: string, intro: string){
+  const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+  if(user){
+    const dialogRef = this.dialog.open(ProfileUpdateComponent, {
+      data: {id: userId, intro: intro},
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed', result);
+  });
+  
+  }
 }
 
 }

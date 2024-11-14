@@ -1,10 +1,13 @@
 <div class="main_component div-flex">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Profil: </mat-card-title>
+      <mat-card-title *ngIf="user" >{{user.username }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content *ngIf="user">
+        <div>{{user.intro ? user.intro : 'Bemutatkozás'}}
+          <button *ngIf="ownProfile" mat-button (click)="updateIntro(user.id, user.intro)">Módosítás</button>
+        </div><br><br>
         <button *ngIf="!loggedinprofile" mat-flat-button (click)="follow()">{{isFollowed ? 'Követés visszavonása':'Követés'}}</button>
         <div (click)="openFollowerDialog()">
           Követők:{{ followerCount }}
@@ -12,12 +15,11 @@
         <div (click)="openFollowingDialog()">
           Követések:{{ followingCount }}
         </div>
-        <p><mat-icon>person</mat-icon>{{user.username }}</p>
         <p><mat-icon>email</mat-icon>{{user.email }}</p>
         <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">Kép feltöltés</button>
 
         <div class="image-container">
-          <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.date)">
+          <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.date, image.caption)">
         </div>
         <button *ngIf="ownProfile" mat-button (click)="deleteProfile()">Profil törlése</button>
     </mat-card-content>

@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
   loginfail: string = '';
-
+  showPassword: boolean = true;
   loading:boolean = false;
 
   constructor(private fb: FormBuilder, private router: Router, private loadingService: LoadService, private authService: AuthService) {
@@ -54,5 +54,10 @@ export class LoginComponent implements OnInit{
       }
         
     }
+
+    PswVisibility(){
+      this.showPassword = !this.showPassword;
+    }
+      
 
 }

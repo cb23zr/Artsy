@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <h1>Bemutatkozás módosítása</h1>
+    <form [formGroup]="introForm">
+        <div>
+            <mat-form-field>
+                <mat-label for="intro">Bemutatkozás:</mat-label>
+                <textarea matInput rows="7" cols="100" formControlName="intro"></textarea>
+            </mat-form-field>
+        </div>
+        <div *ngIf="updatefail" class="error-message">
+            {{updatefail}}
+          </div><br>
+        <div>
+            <button mat-raised-button color="accent" (click)="updateIntro()">Közzétesz</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Vissza</button>
+  </mat-dialog-actions>
+  

@@ -106,8 +106,9 @@ export class CommentService {
     this.commentsSubject.next(comments);
   }
 
-  update(){
-
+  update(commentId: string, comment: string){
+    const commentDoc = doc(this.db, 'comments', commentId);
+    return updateDoc(commentDoc, { comment: comment });
   }
 
 }

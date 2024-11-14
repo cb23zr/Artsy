@@ -8,6 +8,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ControlErrorComponent } from "../../shared/error/controlError";
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ControlErrorComponent } from "../../shared/error/controlError";
         MatInputModule,
         MatButtonModule,
         MatProgressSpinnerModule,
-        ControlErrorComponent
+        ControlErrorComponent,
+        MatIconModule
     ]
 })
 export class LoginModule { }

@@ -8,24 +8,24 @@
                 <div class="form-group">
                     <input style="display: none;" type="file" class="form-control" accept="image/*" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
                     <button mat-raised-button color="primary" type="button" (click)="fileUploader.click()">Fájl kiválasztása</button>
-                    <div class="text-required" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">This field is required!</div>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">Kötelező mező!</div>
                 </div><br>
                 <div class="form-group">
                 <mat-form-field>
-                    <input matInput class="form-control" formControlName="caption" placeholder="Caption">
+                    <input matInput class="form-control" formControlName="caption" placeholder="Leírás">
                 </mat-form-field>
-                    <div class="text-required" *ngIf="isSubmitted && formControls.caption.errors?.['required']">This field is required!</div>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.caption.errors?.['required']">Kötelező mező!</div>
                 </div>
                 <div class="form-group">
                     <mat-form-field >
                     <mat-select  class="category" formControlName="category">
-                        <mat-option class="custom-selected-option" value="Animal">Animal</mat-option>
-                        <mat-option class="custom-selected-option" value="Person">Person</mat-option>
-                        <mat-option class="custom-selected-option" value="Nature">Nature</mat-option>
+                        <mat-option class="custom-selected-option" value="Animal">Állat</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Ember</mat-option>
+                        <mat-option class="custom-selected-option" value="Nature">Természet</mat-option>
                         <mat-option class="custom-selected-option" value="Fantasy">Fantasy</mat-option>
-                        <mat-option class="custom-selected-option" value="Object">Object</mat-option>
-                        <mat-option class="custom-selected-option" value="Person">Abstract</mat-option>
-                        <mat-option class="custom-selected-option" value="Person">Else</mat-option>
+                        <mat-option class="custom-selected-option" value="Object">Tárgy</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Absztakrt</mat-option>
+                        <mat-option class="custom-selected-option" value="Person">Egyéb</mat-option>
                     </mat-select>
                     </mat-form-field>
                 </div>

@@ -9,12 +9,14 @@ import { MatInputModule } from '@angular/material/input';
 import {DatePipe} from "@angular/common";
 import { MatButtonModule } from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
-import { CdkTableModule } from '@angular/cdk/table'; 
+import { CdkTableModule } from '@angular/cdk/table';
+import { CommentUpdateComponent } from './comment-update/comment-update.component'; 
 
 
 @NgModule({
   declarations: [
-    PopupComponent
+    PopupComponent,
+    CommentUpdateComponent
   ],
   imports: [
     CdkTableModule,

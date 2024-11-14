@@ -4,10 +4,6 @@ import {
   MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
 } from '@angular/material/dialog';
 import { Comment } from 'src/app/shared/models/Comment';
 import { User } from 'src/app/shared/models/User';
@@ -16,13 +12,14 @@ import { FavoriteService } from 'src/app/shared/services/favorite.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { Route, Router } from '@angular/router';
 import { UploadService } from 'src/app/shared/services/upload.service';
-import { Timestamp } from 'firebase/firestore';
+import { CommentUpdateComponent } from './comment-update/comment-update.component';
 
 export interface DialogData {
   id: string;
   name: string;
   imageUrl: string;
   date: Date;
+  caption: string;
 }
 
 @Component({
@@ -66,6 +63,8 @@ export class PopupComponent implements OnInit, OnChanges {
 
    ngOnInit(){
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+
+
 
     if(user){
     this.userService.getByIdObservable(user.uid).subscribe(async data => {
@@ -168,6 +167,30 @@ export class PopupComponent implements OnInit, OnChanges {
       console.error('Error loading image fav count:', error);
     }
   }
+
+  updateComment(commentId: string, comment: string){
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+    if(user){
+      const dialogRef = this.dialog.open(CommentUpdateComponent, {
+        data: {id: commentId, comment: comment},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      this.commService.comments$.subscribe(comments => {
+        this.comments = comments.filter(comment => comment.imageId === this.data.id);
+      });
+    
+      this.commService.getCommentbyId(this.data.id).subscribe(comments => {
+        this.comments = comments;
+      });
+    
+      this.commService.getCommentsByImageId(this.data.id).then(comments => {
+        this.commentImg = comments;
+      });
+    });
+    } 
+  }
+
 
   generateId(): string {
     return Math.random().toString(36).substr(2, 20);

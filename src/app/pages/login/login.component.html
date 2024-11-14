@@ -1,17 +1,23 @@
 <span class="load" *ngIf="loading">
   <mat-spinner></mat-spinner>
 </span>
-
 <h1>Bejelentkezés:</h1>
 <div>
   <form [formGroup]="loginForm">
-
   <control-error class="error-message" controlName="email" />
-  <mat-form-field><mat-label for="email"> Email-cím: </mat-label><br>
-    <input matInput type="email" id="email" formControlName="email"></mat-form-field><br>
+    <mat-form-field>
+      <mat-label for="email"> Email-cím: </mat-label><br>
+      <input matInput type="email" id="email" formControlName="email">
+    </mat-form-field><br>
     <control-error class="error-message" controlName="psw" />
-  <mat-form-field><mat-label for="psw">Jelszó: </mat-label><br>
-    <input matInput type="password" id="psw" formControlName="psw"></mat-form-field><br><br>
+    <div> 
+      <mat-form-field><mat-label for="psw">Jelszó: </mat-label><br>
+        <input matInput [type]="showPassword ? 'password' : 'text'" id="psw" formControlName="psw">
+        <button mat-icon-button matSuffix (click)="PswVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+          <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field><br><br>
+    </div>
   <div *ngIf="loginfail" class="error-message">
     {{loginfail}}
   </div><br>

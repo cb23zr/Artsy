@@ -10,6 +10,7 @@ export interface User{
   followerCount: number;
   followingCount: number;
   following: [];
-  followedby: []
+  followedby: [];
+  intro: string;
 }
 

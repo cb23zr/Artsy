@@ -55,8 +55,9 @@ export class MainComponent implements OnInit{
         const id = doc.get('id');
         const name = doc.get('username');
         const date = doc.get('date');
+        const caption = doc.get('caption');
         if(url){
-          this.imageList.push({id,url,name, date});
+          this.imageList.push({id,url,name, date, caption});
         }
       })
       } catch (error) {
@@ -73,12 +74,12 @@ export class MainComponent implements OnInit{
     return formGroup;
   }
 
-  openDialog(id: string, imageurl:string, name: string, date: Timestamp): void {
+  openDialog(id: string, imageurl:string, name: string, date: Timestamp, caption: string): void {
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if (user && name !== undefined) {
       const actualDate =date.toDate();
       const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: name, imageUrl: imageurl, date:actualDate},
+      data: {id: id ,name: name, imageUrl: imageurl, date:actualDate, caption: caption},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -98,8 +99,9 @@ export class MainComponent implements OnInit{
         const id = doc.get('id');
         const name = doc.get('username');
         const date = doc.get('date');
+        const caption = doc.get('caption');
         if (url) {
-          this.imageList.push({ id, url, name, date });
+          this.imageList.push({ id, url, name, date, caption});
         }
       });
     }).catch(error => {

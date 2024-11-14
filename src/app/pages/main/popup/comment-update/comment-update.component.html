@@ -1,0 +1,22 @@
+<mat-dialog-content>
+    <h1>Komment módosítása</h1>
+    <form [formGroup]="commentForm">
+        <div>
+            <mat-form-field>
+                <mat-label for="intro">Komment:</mat-label>
+                <textarea matInput rows="7" cols="100" formControlName="comment"></textarea>
+            </mat-form-field>
+        </div>
+        <div *ngIf="updatefail" class="error-message">
+            {{updatefail}}
+          </div><br>
+        <div>
+            <button mat-raised-button color="accent" (click)="updateComment()">Közzétesz</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Vissza</button>
+  </mat-dialog-actions>
+  
+
