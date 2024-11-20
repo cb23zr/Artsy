@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from '@angular/fire/app';
-import { addDoc, arrayRemove, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, increment, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, arrayRemove, collection, deleteDoc, doc, Firestore, getDoc, getDocs, getFirestore, increment, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/User';
 import { Observable, from, map } from 'rxjs';
@@ -22,9 +22,17 @@ export class UserService {
      private authService: AuthService, private uploadService: UploadService,
      private commentService: CommentService) {}
 
+
   async create(user: User): Promise<void> {
     try {
-      await setDoc(doc(this.db, 'users', user.id), user);
+      const docRef = doc(this.db,"users", user.id);
+      const docSnap = await getDoc(docRef);
+      
+        await setDoc(doc(this.db, 'users', user.id), user);
+    
+      
+      
+      
     } catch (error) {
       console.error('Hiba a user dokumentum készítése közben:', error);
       throw error;
@@ -46,7 +54,6 @@ export class UserService {
       console.error('Error getting documents: ', error);
       return null;
     }));
-
   }
 
   async getById(id:string): Promise<User | undefined>{
@@ -56,8 +63,7 @@ export class UserService {
       return docSnap.data() as User;
     } else {
       return undefined;
-    }
-    
+    } 
   }
 
   getByIdObservable(id: string) {
@@ -167,8 +173,7 @@ export class UserService {
         }).catch((error) => {
          console.log("Hiba a törlésnél: " + error);
       });
-      
-    
 
   }
+
 }

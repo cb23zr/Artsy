@@ -10,13 +10,16 @@ import {DatePipe} from "@angular/common";
 import { MatButtonModule } from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommentUpdateComponent } from './comment-update/comment-update.component'; 
+import { CommentUpdateComponent } from './comment-update/comment-update.component';
+import { CollectionPopupComponent } from './collection-popup/collection-popup.component'; 
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
   declarations: [
     PopupComponent,
-    CommentUpdateComponent
+    CommentUpdateComponent,
+    CollectionPopupComponent
   ],
   imports: [
     CdkTableModule,
@@ -30,6 +33,7 @@ import { CommentUpdateComponent } from './comment-update/comment-update.componen
     DatePipe,
     ReactiveFormsModule,
     MatButtonModule,
+    MatListModule
   ]
 })
 export class PopupModule { }

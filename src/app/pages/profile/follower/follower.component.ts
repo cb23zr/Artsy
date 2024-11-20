@@ -48,8 +48,9 @@ export class FollowerComponent implements OnInit{
   onNoClick(): void {
     this.dialogRef.close();
     const currentUrl = this.router.url;
+    const decodedUsername = decodeURIComponent(this.data.username);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([currentUrl]);
+      this.router.navigate(['/profile/' + decodedUsername]);
     });
   }
 

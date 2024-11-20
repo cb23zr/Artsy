@@ -1,0 +1,16 @@
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .image-container img {
+    width: 150px; 
+    height: 150px;
+    object-fit: cover; 
+    margin: 5px;
+  }
+
+.uploads{
+    width: 150px;
+    height: 150px;
+  }

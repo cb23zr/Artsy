@@ -54,6 +54,7 @@ export class RegistrationComponent {
           favorites: [],
           uploads: [],
           comments:[],
+          collections: [],
           followerCount:0,
           followingCount:0,
           following:[],
@@ -69,7 +70,6 @@ export class RegistrationComponent {
       });
     } else{
       console.error("Hibás regisztráció!");
-
     }
   }
 

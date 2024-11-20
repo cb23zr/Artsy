@@ -3,6 +3,10 @@ import {FormControl, Validators, FormGroupDirective, FormGroup, FormBuilder} fro
 import {Router} from "@angular/router";
 import {LoadService} from "../../shared/services/load.service";
 import {AuthService} from "../../shared/services/auth.service";
+import {  getAuth, signInWithPopup,GoogleAuthProvider } from "firebase/auth";
+import { UserService } from 'src/app/shared/services/user.service';
+import { User } from 'src/app/shared/models/User';
+import { getRedirectResult, signInWithRedirect } from '@angular/fire/auth';
 
 
 @Component({
@@ -16,8 +20,11 @@ export class LoginComponent implements OnInit{
   loginfail: string = '';
   showPassword: boolean = true;
   loading:boolean = false;
+  provider = new GoogleAuthProvider();
 
-  constructor(private fb: FormBuilder, private router: Router, private loadingService: LoadService, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router,
+   private loadingService: LoadService, private authService: AuthService,
+  private userService: UserService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       psw: ['', Validators.required],
@@ -25,7 +32,8 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit() :void{
-  
+    
+    //this.redirectResult();
   }
 
   async login(){
@@ -58,6 +66,104 @@ export class LoginComponent implements OnInit{
     PswVisibility(){
       this.showPassword = !this.showPassword;
     }
-      
 
+    signInWithGoogle(){
+      const auth = getAuth();
+      console.log("Google sign-in initiated");
+        signInWithPopup(auth, this.provider)
+          .then((result) => {
+            console.log("Google sign-in initiated res");
+                
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                if(credential!== null){
+                  console.log("Google sign-in cred not null");
+                  const token = credential.accessToken;
+                }
+               
+                const user = result.user;
+                if (user) {
+                  console.log("User"+ user.uid)
+                  const addUser: User = {
+                    id: user.uid,
+                    username: user.displayName || '',
+                    email: user.email || '',
+                    lname: '',
+                    fname: '',
+                    favorites: [],
+                    uploads: [],
+                    comments: [],
+                    collections: [],
+                    followerCount: 0,
+                    followingCount: 0,
+                    following: [],
+                    followedby: [],
+                    intro: ''
+                  }
+                  const userExists = this.userService.getById(addUser.id);
+                  if(userExists == undefined){
+                    this.userService.create(addUser).then(() => {
+                    this.router.navigate(['/main']);
+                  });
+
+                  }else{
+                    this.router.navigate(['/main']);
+                  }
+
+                }
+               
+              }).catch((error) => {
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                console.error("Google sign-in failed");
+                
+              });
+
+      /*const authe = getAuth();
+      console.log("Google sign-in initiated");
+      signInWithRedirect(auth, this.provider)
+        .then(() => {
+          console.log("login success")
+          this.router.navigate(['/main']);
+        }).catch((error) => {
+          console.error("Hiba a Google-lel való bejelentkezéskor: " + error);
+
+        });*/
+    }
+
+   /*redirectResult(){
+        const auth = getAuth();
+        console.log("Google sign-in initiated result");
+        getRedirectResult(auth).then((result) => {
+          console.log("haha " + result);
+          console.log("valami");
+          if (result) {
+            console.log("Result")
+            const user = result.user;
+            if (user) {
+              console.log("User"+ user.uid)
+              const addUser: User = {
+                id: user.uid,
+                username: user.displayName || '',
+                email: user.email || '',
+                lname: '',
+                fname: '',
+                favorites: [],
+                uploads: [],
+                comments: [],
+                followerCount: 0,
+                followingCount: 0,
+                following: [],
+                followedby: [],
+                intro: ''
+              }
+              
+              this.userService.create(addUser).then(() => {
+                this.router.navigate(['/main']);
+              });
+            }
+          }
+        }).catch((error) => {
+          console.error('Error handling redirect result:', error);
+        });
+   }*/
+      
 }

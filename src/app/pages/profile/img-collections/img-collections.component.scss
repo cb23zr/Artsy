@@ -1,0 +1,22 @@
+mat-card{
+    width: 80%;
+    height: 80%;
+    align-self: center;
+  }
+
+
+  .div-flex{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align:left;
+    height: 80%;
+  }
+
+  .main_component{
+    height: 100vh;
+  }
+
+  .buttons{
+    margin-bottom: 10px;
+  }

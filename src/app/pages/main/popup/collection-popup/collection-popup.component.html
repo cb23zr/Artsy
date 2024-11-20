@@ -1,0 +1,19 @@
+<mat-dialog-content>
+    <div>Kollekcióim:</div>
+    <div *ngIf="collections.length > 0; else noFollowing">
+        <mat-list>
+          <mat-list-item *ngFor="let collection of collections">
+            <p>{{collection.title}}({{collection.imgCount}})
+            <button mat-raised-button color="primary" (click)="saveIntoColl(collection.id)">Mentés</button>
+          </p>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <ng-template #noFollowing>
+        <p>Még nincsen kollekció</p>
+      </ng-template>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Vissza</button>
+</mat-dialog-actions>

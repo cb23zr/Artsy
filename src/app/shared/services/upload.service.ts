@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, Query, QueryDocumentSnapshot, addDoc, arrayUnion, deleteDoc, deleteField, doc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
-import { arrayRemove, collection, getFirestore, increment, setDoc } from 'firebase/firestore';
+import { arrayRemove, collection, getDoc, getFirestore, increment, setDoc } from 'firebase/firestore';
 import { AngularFireList } from '@angular/fire/compat/database';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from 'src/environments/environment';
 import { deleteObject, getStorage, ref } from '@angular/fire/storage';
 import { CommentService } from './comment.service';
+import { Image } from '../models/Image';
+import { from, map } from 'rxjs';
 
 
 @Injectable({
@@ -54,6 +56,41 @@ export class UploadService {
         return url;
       }
       return url;
+  }
+
+  async getById(id:string): Promise<Image | undefined>{
+    const docRef = doc(this.db,"images", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data() as Image;
+    } else {
+      return undefined;
+    } 
+  }
+
+  getImageById(id: string) {
+    return from(this.getById(id)).pipe(
+      map(img => {
+        if (img) {
+          return img;
+        } else {
+          throw new Error('Nem található ilyen kép');
+        }
+      })
+    );
+  }
+
+  async getImgDoc(id: string){
+    const imgRef = collection(this.db, "images");
+    const q = query(imgRef, where('id', '==', id));
+    const imgDocs = await getDocs(q);
+    if(!imgDocs.empty){
+      const imgDoc = imgDocs.docs[0];
+      const imgData = imgDoc.data();
+      return imgData;  
+    }else{
+      return undefined;
+    }
   }
 
   async addToUploads(imageId: string, userName: string): Promise<void>{

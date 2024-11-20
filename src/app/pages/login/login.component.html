@@ -3,7 +3,7 @@
 </span>
 <h1>Bejelentkezés:</h1>
 <div>
-  <form [formGroup]="loginForm">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
   <control-error class="error-message" controlName="email" />
     <mat-form-field>
       <mat-label for="email"> Email-cím: </mat-label><br>
@@ -21,8 +21,10 @@
   <div *ngIf="loginfail" class="error-message">
     {{loginfail}}
   </div><br>
-  <span><button mat-raised-button color="accent" (click)="login()">Bejelentkezés</button></span>
+  <span><button mat-raised-button color="accent" type="submit">Bejelentkezés</button></span>
   <span><button mat-raised-button color="primary" [routerLink]="'/registration'">Regisztráció</button></span>
+  <span><button mat-raised-button color="accent" (click)="signInWithGoogle()">Bejelentkezés Google-el</button></span>
+
 </form>
 </div>
 <br>

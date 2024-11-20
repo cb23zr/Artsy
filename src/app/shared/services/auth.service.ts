@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
 import firebase from 'firebase/compat/app'
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,6 +35,8 @@ export class AuthService {
         const errorMessage = error.message;
     });
   }
+
+  
 
   isUserLoggedIn() {
     return this.auth.user;

@@ -1,0 +1,31 @@
+<div class="main_component div-flex">
+    <mat-card>
+        <mat-card-header>
+        <mat-card-title >Kollekcióim:</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <br>
+            <button mat-raised-button color="accent" (click)="newClicked()">Új létrehozása</button><br><br>
+            <form *ngIf="newCollection" [formGroup]="collectionForm" (ngSubmit)="newImgCollection()">
+                <div>
+                  <mat-form-field>
+                    <mat-label for="collName">Kollekció neve:</mat-label>
+                    <input matInput id="title" type="text" formControlName="title">
+                  </mat-form-field>
+                </div>
+                <div>
+                  <button mat-raised-button color="primary" type="submit">Mentés</button>
+                </div>
+              </form><br><br>
+
+              <div *ngIf="collections.length">
+                <button mat-raised-button color="accent"  class="collections" *ngFor="let collection of collections" (click)="navigateTo(collection.title)" >{{collection.title}}</button>
+              </div><br><br>
+              
+        </mat-card-content>
+        <mat-card-footer>
+            <button mat-raised-button color="primary" [routerLink]="['/profile',username]">Vissza</button>
+        </mat-card-footer>
+    </mat-card>
+</div>

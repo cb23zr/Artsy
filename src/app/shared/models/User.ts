@@ -7,6 +7,7 @@ export interface User{
   favorites: [];
   uploads: [];
   comments: [];
+  collections: [];
   followerCount: number;
   followingCount: number;
   following: [];

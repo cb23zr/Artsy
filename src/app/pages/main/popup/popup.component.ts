@@ -13,6 +13,8 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { Route, Router } from '@angular/router';
 import { UploadService } from 'src/app/shared/services/upload.service';
 import { CommentUpdateComponent } from './comment-update/comment-update.component';
+import { CollectionService } from 'src/app/shared/services/collection.service';
+import { CollectionPopupComponent } from './collection-popup/collection-popup.component';
 
 export interface DialogData {
   id: string;
@@ -20,6 +22,7 @@ export interface DialogData {
   imageUrl: string;
   date: Date;
   caption: string;
+  username: string;
 }
 
 @Component({
@@ -52,7 +55,7 @@ export class PopupComponent implements OnInit, OnChanges {
     private fb: FormBuilder, private userService: UserService,
     private favService: FavoriteService,
     private uploadService: UploadService,
-    private router: Router
+    private router: Router, private collectionService: CollectionService
    ) {}
 
    ngOnChanges(): void {
@@ -108,14 +111,14 @@ export class PopupComponent implements OnInit, OnChanges {
         const commentData: Comment = this.commentForm.value as Comment;
         this.commService.create(commentData, this.user.username).then(() => {
           this.commentImg.push(commentData);
-          console.log('Comment successfully created!');
+          console.log('Sikeresen létrehoztad a kommentet!');
           this.commentForm.patchValue({
             comment: '',
             id: this.generateId(),  
             date: new Date()         
         });
         }).catch(error => {
-          console.error('Error creating comment:', error);
+          console.error('Hiba komment létrehozás közben:', error);
         });
       }
   }
@@ -123,7 +126,7 @@ export class PopupComponent implements OnInit, OnChanges {
   async deleteComment(commentId: string){
     await this.commService.delete(this.user.id,commentId);
     this.comments = this.comments.filter(comment => comment.id !== commentId);
-    console.log('Comment successfully removed!');
+    console.log('Komment sikeresen törölve!');
   }
 
   deletePic(){
@@ -146,16 +149,16 @@ export class PopupComponent implements OnInit, OnChanges {
         await this.favService.deleteFavorit(this.data.id, this.user.username);
         this.isFavorite = false;
         this.favCount--;
-        console.log('Image successfully removed from favorites!');
+        console.log('Sikeresen töröltük a kedvenceid közül a képet!');
         
       } else {
         await this.favService.addFavorite(this.data.id, this.user.username);
         this.isFavorite = true;
         this.favCount++;
-        console.log('Image successfully added to favorites!');
+        console.log('Kép sikeresen hozzáadva a kedvelésekhez');
       }
     } else {
-      console.error('User not logged in');
+      console.error('Nincs bejelentkezett felhasználó!');
     }
   }
 
@@ -175,7 +178,7 @@ export class PopupComponent implements OnInit, OnChanges {
         data: {id: commentId, comment: comment},
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      console.log('Dialog bezárva: ', result);
       this.commService.comments$.subscribe(comments => {
         this.comments = comments.filter(comment => comment.imageId === this.data.id);
       });
@@ -191,6 +194,18 @@ export class PopupComponent implements OnInit, OnChanges {
     } 
   }
 
+  saveToCollection(imageId: string){
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+    if(user){
+      const dialogRef = this.dialog.open(CollectionPopupComponent, {
+        data: {imgId: imageId, userId: user.uid},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog bezárva: ', result);
+    });
+    } 
+  }
+
 
   generateId(): string {
     return Math.random().toString(36).substr(2, 20);
@@ -199,8 +214,9 @@ export class PopupComponent implements OnInit, OnChanges {
   onNoClick(): void {
     this.dialogRef.close();
     const currentUrl = this.router.url;
+    const decodedUsername = decodeURIComponent(this.data.username);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([currentUrl]);
+      this.router.navigate([currentUrl]);
     });
   }
 

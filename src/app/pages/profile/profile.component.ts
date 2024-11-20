@@ -162,12 +162,12 @@ loadDataByID(uid:string){
   });
 }
 
-openDialog(id: string, imageurl:string, date: Timestamp, caption: string): void {
+openDialog(id: string, imageurl:string, date: Timestamp, caption: string, username: string): void {
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
     const actualDate =date.toDate();
     const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate, caption: caption},
+      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate, caption: caption, username: username},
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -179,7 +179,7 @@ openDialog(id: string, imageurl:string, date: Timestamp, caption: string): void 
 openFollowingDialog(){
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
-    console.log(this.ownProfile+ " cica")
+    console.log(this.ownProfile)
     const dialogRef = this.dialog.open(FollowingComponent, {
       data: {following:this.following, username: this.name, uid: user.uid, own:this.ownProfile}
   });
@@ -193,7 +193,7 @@ openFollowingDialog(){
 openFollowerDialog(){
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
-    console.log(this.ownProfile+ " cica")
+    console.log(this.ownProfile)
     const dialogRef = this.dialog.open(FollowerComponent, {
       data: {followedby:this.followedby, username: this.name, uid: user.uid,own: this.ownProfile}
   });
@@ -231,11 +231,11 @@ deleteProfile(){
   this.userService.delete(this.user.id);
 }
 
-updateIntro(userId: string, intro: string){
+updateIntro(userId: string, intro: string, username: string){
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
     const dialogRef = this.dialog.open(ProfileUpdateComponent, {
-      data: {id: userId, intro: intro},
+      data: {id: userId, intro: intro, username: username},
   });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed', result);

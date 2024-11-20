@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export interface DialogData {
   id: string;
   intro: string;
+  username: string;
 }
 
 @Component({
@@ -42,16 +43,17 @@ export class ProfileUpdateComponent {
     }else{
       this.updatefail="Hiba a módosítás közben!";
     }
-    
-
+  
   }
 
   onNoClick(): void {
     this.dialogRef.close();
-    const currentUrl = this.router.url;
+    const decodedUsername = decodeURIComponent(this.data.username);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([currentUrl]);
+      this.router.navigate(['/profile/' + decodedUsername]);
     });
   }
+
+  
 
 }

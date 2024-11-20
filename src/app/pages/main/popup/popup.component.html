@@ -5,13 +5,13 @@
     <img [src]="data.imageUrl" alt="Selected Image" class="selected-image">
     <div class="br"></div>
     <div>{{data.caption}}</div>
-    <button mat-button (click)="onAddFavorit()">{{isFavorite ? 'Kedvelés visszavonása':'Kedvelés'}}</button>
+    <button mat-raised-button color="primary" (click)="onAddFavorit()">{{isFavorite ? 'Kedvelés visszavonása':'Kedvelés'}}</button>
     <div>
       Kedvelések száma:{{ favCount }}
     </div>
     <div class="br"></div>
     <div id="bejegyzes">
-      <form [formGroup]="commentForm" (ngSubmit)="addComment()">
+      <form [formGroup]="commentForm">
           <div>
             <mat-form-field class="hidden">
               <mat-label for="username">Felhasználónév:</mat-label>
@@ -32,7 +32,7 @@
         </form>
 
       <div *ngIf="comments.length">
-        <mat-table [dataSource]="comments" id="commentblock">
+        <table mat-table [dataSource]="comments" id="commentblock">
 
           <ng-container matColumnDef="uname">
             <th mat-header-cell *matHeaderCellDef> Felhasználónév </th>
@@ -58,16 +58,16 @@
             <button *ngIf="user && comment.uname === user.username" mat-button (click)="updateComment(comment.id, comment.comment)">Módosítás</button>
             </td>
           </ng-container>
-
+          
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </mat-table>
+        </table>
       </div>
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Vissza</button>
+  <button mat-raised-button color="primary" (click)="saveToCollection(data.id)">Mentés</button>
   <button *ngIf="data?.name === this.user?.username" mat-button (click)="deletePic()">Törlés</button>
 </mat-dialog-actions>
 
