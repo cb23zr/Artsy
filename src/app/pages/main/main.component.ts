@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, PipeTransform} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {Comment} from "../../shared/models/Comment";
 import {Router} from "@angular/router";
@@ -15,6 +15,9 @@ import {
 import { PopupComponent } from './popup/popup.component';
 import { LoginPopupComponent } from '../login-popup/login-popup.component';
 import { Timestamp } from '@angular/fire/firestore';
+import { OrderFormatPipe } from 'src/app/shared/pipes/order-format.pipe';
+import { UserService } from 'src/app/shared/services/user.service';
+
 
 @Component({
   selector: 'app-main',
@@ -22,12 +25,14 @@ import { Timestamp } from '@angular/fire/firestore';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit{
-  [x: string]: any;
-  unsub: any;
-
-  animal: string | undefined;
   
-
+  unsub: any;
+  term:any;
+  animal: string | undefined;
+  defaultorder: any = "default";
+  following: boolean = false;
+  
+  followingList!: any[];
   imageList!: any[];
   rowIndexArray!: any[];
 
@@ -42,10 +47,20 @@ export class MainComponent implements OnInit{
 
 
 
-  constructor(private fb: FormBuilder, private router: Router, private service: UploadService, public dialog: MatDialog) {
+  constructor(private fb: FormBuilder, private router: Router, private service: UploadService, public dialog: MatDialog,
+              private userService: UserService
+  ) {
   }
 
   async ngOnInit(){
+
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+    this.userService.getByIdObservable(user.uid).subscribe(data =>{
+      if(data){
+        this.followingList = data.following;
+      }
+    })
+
 
     try {
       const documents = await this.service.getDocuments();
@@ -54,10 +69,21 @@ export class MainComponent implements OnInit{
         const url= doc.get("imageurl"); 
         const id = doc.get('id');
         const name = doc.get('username');
-        const date = doc.get('date');
+        const dateTime = doc.get('date');
+        const date = dateTime.toDate();
         const caption = doc.get('caption');
+        const favCount = doc.get('favCount');
+
         if(url){
-          this.imageList.push({id,url,name, date, caption});
+          for(const user of this.followingList){
+            if(user === name){
+              this.following = true;
+            }else{
+              this.following = false;
+            }
+          }
+          const onTheList = this.following;
+          this.imageList.push({id,url,name, date, caption, favCount, onTheList});
         }
       })
       } catch (error) {
@@ -77,9 +103,9 @@ export class MainComponent implements OnInit{
   openDialog(id: string, imageurl:string, name: string, date: Timestamp, caption: string): void {
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if (user && name !== undefined) {
-      const actualDate =date.toDate();
+      
       const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: name, imageUrl: imageurl, date:actualDate, caption: caption},
+      data: {id: id ,name: name, imageUrl: imageurl, date:date, caption: caption},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -98,14 +124,27 @@ export class MainComponent implements OnInit{
         const url = doc.get("imageurl");
         const id = doc.get('id');
         const name = doc.get('username');
-        const date = doc.get('date');
+        const dateTime = doc.get('date');
+        const date = dateTime.toDate();
         const caption = doc.get('caption');
+        const favCount = doc.get('favCount');
+
         if (url) {
-          this.imageList.push({ id, url, name, date, caption});
+          for(const user of this.followingList){
+            if(user === name){
+              this.following = true;
+            }else{
+              this.following = false;
+            }
+          }
+          const onTheList = this.following;
+          this.imageList.push({ id, url, name, date, caption, favCount, onTheList});
         }
       });
     }).catch(error => {
       console.error('Hiba újratöltés közben:', error);
     });
   }
+
+ 
 }

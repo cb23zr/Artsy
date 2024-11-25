@@ -3,9 +3,27 @@
 </div>
 <div class="br"></div>
 
-
 <mat-card>
+  <div class="search-bar-container">
+    <button mat-icon-button>
+      <mat-icon>search</mat-icon>
+    </button>
+    <input id="search" type="text" placeholder="Keresés" [(ngModel)]="term">
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Rendezés</mat-label>
+      <mat-select matNativeControl required [(value)]="defaultorder">
+        <mat-option value="default">Alap</mat-option>
+        <mat-option value="datenew">Legújabbak elöl</mat-option>
+        <mat-option value="dateold">Legrégebbiek elöl</mat-option>
+        <mat-option value="following">Követések szerint</mat-option>
+        <mat-option value="mostLikes">Legtöbb kedvelés</mat-option>
+        <mat-option value="leastLikes">Legkevesebb kedvelés</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <div class="image-container">
-    <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.name, image.date, image.caption)">
+    <img class = "uploads" *ngFor="let image of imageList |orderFormat: defaultorder |filter: term" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.name, image.date, image.caption)" >
   </div>
 </mat-card>

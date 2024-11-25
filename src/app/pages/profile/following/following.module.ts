@@ -6,6 +6,8 @@ import { FollowingRoutingModule } from './following-routing.module';
 import { FollowingComponent } from './following.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {MatListModule} from '@angular/material/list';
     FormsModule,
     ReactiveFormsModule,
     MatListModule,
+    MatIconModule,
+    Ng2SearchPipeModule,
     
   ]
 })

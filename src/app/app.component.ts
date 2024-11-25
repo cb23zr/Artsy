@@ -8,6 +8,7 @@ import { MatIconButton } from '@angular/material/button';
 import { UserService } from './shared/services/user.service';
 import { User } from './shared/models/User';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +16,7 @@ import { User } from './shared/models/User';
 })
 export class AppComponent implements OnInit{
   page = 'main';
+  term : any;
   routes: Array<any> = [];
   loggedInUser?: firebase.default.User | null = null;
   user!: User;

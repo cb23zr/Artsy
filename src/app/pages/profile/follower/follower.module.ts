@@ -6,6 +6,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {MatListModule} from '@angular/material/list';
     MatListModule,
     ReactiveFormsModule,
     FormsModule,
+    MatIconModule,
+    Ng2SearchPipeModule,
   ]
 })
 export class FollowerModule { }

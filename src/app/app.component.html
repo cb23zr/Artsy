@@ -17,12 +17,6 @@
           <li *ngIf="!(loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
           <li *ngIf="loggedInUser"><a routerLink="/profile" (click)="login()">Profil</a></li>
           <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
-          <div class="search-bar-container">
-            <button mat-icon-button>
-              <mat-icon>search</mat-icon>
-            </button>
-            <input id="search-input" placeholder="Keresés">
-          </div>
         </ul>
       </div>
       <div><img src="assets/articon.png" height="70" width="70"></div>

@@ -3,8 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './shared/menu/menu.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSidenavModule } from "@angular/material/sidenav";
@@ -27,15 +28,18 @@ import { SearchBarComponent } from './shared/search-bar/search-bar.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
     SearchBarComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
@@ -56,6 +60,7 @@ import { SearchBarComponent } from './shared/search-bar/search-bar.component';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage())
   ],
+  exports:[],
   providers: [],
   bootstrap: [AppComponent]
 })

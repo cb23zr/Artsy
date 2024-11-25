@@ -1,8 +1,14 @@
 <mat-dialog-content>
     <div>Követések</div>
+    <div class="search-bar-container">
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+      <input id="search" type="text" placeholder="Keresés" [(ngModel)]="term">
+    </div>
     <div *ngIf="followingUsers.length > 0; else noFollowing">
         <mat-list>
-          <mat-list-item *ngFor="let user of followingUsers">
+          <mat-list-item *ngFor="let user of followingUsers |filter: term">
             <a [routerLink]="['/profile', user.username]" (click)="dialogRef.close()" mat-line>{{ user.username }}</a>
             <button *ngIf="user.id === this.data.uid || this.data.own" mat-button (click)="delete(user.username)">Törlés</button>
           </mat-list-item>

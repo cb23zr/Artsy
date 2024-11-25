@@ -12,6 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class FollowingComponent implements OnInit{
   followingUsers: User[] = [];
+  term: any;
 
   constructor(
     public dialogRef: MatDialogRef<FollowingComponent>,
