@@ -1,49 +1,78 @@
-<div>
-  <h1>Regisztráció:</h1>
-  <form [formGroup]="signupForm" (ngSubmit)="OnSubmit()" >
-    <control-error class="error-message" controlName="username" />
-    <mat-form-field>
-      <mat-label> Felhasználónév: </mat-label><br>
-      <input matInput type="text" id="username" name="username" formControlName="username"><br>
-    </mat-form-field>
-    <control-error class="error-message" controlName="email" />
-    <mat-form-field>
-      <mat-label> Email cím: </mat-label><br>
-      <input matInput type="email" id="email" name="email" formControlName="email"><br>
-    </mat-form-field>
-    <control-error class="error-message" controlName="lname" />
-      <mat-form-field>
-        <mat-label> Vezetéknév: </mat-label><br>
-        <input matInput type="text" id="lname" name="lname" formControlName="lname"><br>
+<div class="signup_component div-flex">
+<mat-card>
+  <mat-card-content>
+    <div class="form-field">
+    <h1>{{ 'registration' | translate }}</h1>
+    <form [formGroup]="signupForm" (ngSubmit)="OnSubmit()" >
+      <mat-form-field appearance="outline">
+        <mat-label> {{ 'username' | translate }}: </mat-label>
+        <input matInput type="text" id="username" name="username" formControlName="username">
+        <mat-error *ngIf="signupForm.get('username')?.hasError('minlength')">
+          {{ 'usernameMinErr' | translate }}
+        </mat-error>
+        <mat-error *ngIf="signupForm.get('username')?.hasError('maxlength')">
+          {{ 'usernameMaxErr' | translate }}
+        </mat-error>
       </mat-form-field>
-      <control-error class="error-message" controlName="fname" />
-      <mat-form-field>
-        <mat-label> Keresztnév: </mat-label><br>
-        <input matInput type="text" id="fname" name="fname" formControlName="fname"><br>
-      </mat-form-field>
-    <control-error class="error-message" controlName="psw"/>
-    <mat-form-field>
-      <mat-label>Jelszó: </mat-label><br>
-      <input matInput type="password" id="psw" name="psw" formControlName="psw"><br>
-    </mat-form-field>
-    <control-error class="error-message" controlName="repsw" />
-    <div class="error-message" *ngIf="signupForm?.errors?.['mismatch'] && signupForm?.touched">
-      A jelszavak nem egyeznek
-    </div>
-    <mat-form-field>
-      <mat-label>Jelszó megerősítés: </mat-label><br>
-      <input matInput type="password" id="repsw" name="repsw" formControlName="repsw"><br><br>
-    </mat-form-field>
 
-    <span class="button">
-    <span>
-    <button mat-raised-button color="accent" type="submit">Regisztráció</button>
-    </span>
-  <span>
-    <button mat-raised-button color="primary" (click)="Back()">Vissza</button>
-  </span>
-  </span>
-  </form>
+      <mat-form-field appearance="outline">
+        <mat-label> {{ 'email' | translate }} </mat-label>
+        <input matInput type="email" id="email" name="email" formControlName="email">
+      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> {{ 'lastname' | translate }} </mat-label>
+          <input matInput type="text" id="lname" name="lname" formControlName="lname">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> {{ 'firstname' | translate }}</mat-label>
+          <input matInput type="text" id="fname" name="fname" formControlName="fname">
+        </mat-form-field>
+        
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'psw' | translate }}</mat-label>
+        <input matInput [type]="showPassword ? 'password' : 'text'" id="psw" name="psw" formControlName="psw">
+        <button mat-icon-button matSuffix type="button"  (click)="PswVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+          <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="signupForm.get('psw')?.hasError('pattern')">
+          {{ 'pswPatternErr' | translate }}
+        </mat-error>
+        <mat-error *ngIf="signupForm.get('psw')?.hasError('minlength')">
+          {{ 'pswLengthErr' | translate }}
+        </mat-error>
+      </mat-form-field><br>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'pswconfirm' | translate }}: </mat-label>
+        <input matInput [type]="showConfirmPassword ? 'password' : 'text'" id="repsw" name="repsw" formControlName="repsw">
+        <button mat-icon-button matSuffix type="button" (click)="PswConfirmVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+          <mat-icon>{{showConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="error-message" *ngIf="signupForm?.errors?.['mismatch'] && signupForm?.touched">
+        {{ 'pswerror' | translate }}
+      </div>
+        <mat-card-actions>
+          <div class="form-field">
+            <span class="button">
+            <span>
+              <button mat-raised-button color="accent" type="submit">{{ 'registration' | translate }}</button>
+            </span>
+            <span>
+              <button mat-raised-button color="primary" (click)="Back()">{{ 'back' | translate }}</button>
+            </span>
+        
+            <div *ngIf="fail" class="error-message">
+              {{ 'formErr' | translate }}
+            </div><br>
+            </span>
+        </div>
+      </mat-card-actions>
+    </form>
+    </div>
+  </mat-card-content>
+</mat-card>
 </div>
-<br><br>
+
 

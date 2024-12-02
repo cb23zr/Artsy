@@ -1,5 +1,5 @@
 <div id="udv">
-  <h1> Üdvözöllek az oldalon!</h1>
+  <h1>{{ 'welcome' | translate }}</h1>
 </div>
 <div class="br"></div>
 
@@ -8,18 +8,18 @@
     <button mat-icon-button>
       <mat-icon>search</mat-icon>
     </button>
-    <input id="search" type="text" placeholder="Keresés" [(ngModel)]="term">
+    <input id="search" type="text" placeholder="{{ 'search' | translate }}" [(ngModel)]="term">
   </div>
   <div>
     <mat-form-field>
-      <mat-label>Rendezés</mat-label>
+      <mat-label>{{ 'sorting' | translate }}</mat-label>
       <mat-select matNativeControl required [(value)]="defaultorder">
-        <mat-option value="default">Alap</mat-option>
-        <mat-option value="datenew">Legújabbak elöl</mat-option>
-        <mat-option value="dateold">Legrégebbiek elöl</mat-option>
-        <mat-option value="following">Követések szerint</mat-option>
-        <mat-option value="mostLikes">Legtöbb kedvelés</mat-option>
-        <mat-option value="leastLikes">Legkevesebb kedvelés</mat-option>
+        <mat-option *ngIf="user" value="default">{{ 'default' | translate }}</mat-option>
+        <mat-option value="datenew">{{ 'datenew' | translate }}</mat-option>
+        <mat-option value="dateold">{{ 'dateold' | translate }}</mat-option>
+        <mat-option *ngIf="user && emptyList === false" value="following">{{ 'following' | translate }}</mat-option>
+        <mat-option value="mostLikes">{{ 'mostLikes' | translate }}</mat-option>
+        <mat-option value="leastLikes">{{ 'leastLikes' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

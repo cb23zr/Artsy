@@ -1,12 +1,11 @@
-import {Component, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from "rxjs";
 import {MatSidenav} from "@angular/material/sidenav";
 import {AuthService} from "./shared/services/auth.service";
-import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
 import { UserService } from './shared/services/user.service';
 import { User } from './shared/models/User';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -17,11 +16,21 @@ import { User } from './shared/models/User';
 export class AppComponent implements OnInit{
   page = 'main';
   term : any;
+  langSelect: string = "hu";
   routes: Array<any> = [];
   loggedInUser?: firebase.default.User | null = null;
   user!: User;
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(private router: Router, private authService: AuthService, private userService: UserService,
+    private translateService: TranslateService
+  ) {
+    this.translateService.addLangs(['en', 'hu']);
+    this.translateService.setDefaultLang('hu');          
+    const lang = this.translateService.getBrowserLang();
+    if(lang !== undefined){
+      this.translateService.use(lang.match(/en|hu|/) ? lang : 'hu');
+    }
+    
   }
 
   ngOnInit() {
@@ -115,6 +124,16 @@ export class AppComponent implements OnInit{
         });
       }
     }
+  }
+
+  switchLanguage() {
+    if(this.langSelect === "hu"){
+      this.langSelect ="en";
+    }else{
+      this.langSelect="hu";
+    }
+    this.translateService.use(this.langSelect);  
+    localStorage.setItem('language', this.langSelect);      
   }
 
 }

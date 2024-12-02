@@ -9,6 +9,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ControlErrorComponent } from "../../shared/error/controlError";
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatCardModule } from "@angular/material/card";
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { MatIconModule } from '@angular/material/icon';
         MatButtonModule,
         MatProgressSpinnerModule,
         ControlErrorComponent,
-        MatIconModule
+        MatIconModule,
+        TranslateModule,
+        MatCardModule,
     ]
 })
 export class LoginModule { }

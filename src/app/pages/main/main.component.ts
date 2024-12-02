@@ -17,6 +17,8 @@ import { LoginPopupComponent } from '../login-popup/login-popup.component';
 import { Timestamp } from '@angular/fire/firestore';
 import { OrderFormatPipe } from 'src/app/shared/pipes/order-format.pipe';
 import { UserService } from 'src/app/shared/services/user.service';
+import { User } from 'src/app/shared/models/User';
+
 
 
 @Component({
@@ -29,10 +31,12 @@ export class MainComponent implements OnInit{
   unsub: any;
   term:any;
   animal: string | undefined;
-  defaultorder: any = "default";
+  defaultorder: any = "";
   following: boolean = false;
+  user! : any;
   
   followingList!: any[];
+  emptyList: boolean = false;
   imageList!: any[];
   rowIndexArray!: any[];
 
@@ -50,19 +54,32 @@ export class MainComponent implements OnInit{
   constructor(private fb: FormBuilder, private router: Router, private service: UploadService, public dialog: MatDialog,
               private userService: UserService
   ) {
+    
   }
 
   async ngOnInit(){
 
-    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
-    this.userService.getByIdObservable(user.uid).subscribe(data =>{
-      if(data){
-        this.followingList = data.following;
-      }
-    })
+    this.user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+    if(this.user){
+      this.defaultorder = "default";
+      this.userService.getByIdObservable(this.user.uid).subscribe(data =>{
+        if(data){
+          this.followingList = data.following;
+          if(this.followingList.length === 0){
+            this.emptyList= true;
+          }else{
+            this.emptyList = false;
+          }
+          console.log(this.emptyList);
+        }
+      })
+    }else{
+      this.defaultorder="mostLikes";
+    }
 
 
     try {
+      if(this.user){
       const documents = await this.service.getDocuments();
       this.imageList = [];
       documents.forEach((doc)=>{
@@ -85,7 +102,25 @@ export class MainComponent implements OnInit{
           const onTheList = this.following;
           this.imageList.push({id,url,name, date, caption, favCount, onTheList});
         }
-      })
+        })
+      }else{
+        const documents = await this.service.getDocuments();
+        this.imageList = [];
+        documents.forEach((doc)=>{
+          const url= doc.get("imageurl"); 
+          const id = doc.get('id');
+          const name = doc.get('username');
+          const dateTime = doc.get('date');
+          const date = dateTime.toDate();
+          const caption = doc.get('caption');
+          const favCount = doc.get('favCount');
+
+          if(url){
+            const onTheList = this.following;
+            this.imageList.push({id,url,name, date, caption, favCount, onTheList});
+          }
+          })
+      }
       } catch (error) {
       console.error('Hiba a FireStore dokumentumok lekérése közben:', error);
     }
@@ -118,7 +153,14 @@ export class MainComponent implements OnInit{
   }
 
   reloadData(): void {
+    this.user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+    if(this.user){
+      this.defaultorder = "default";
+    }else{
+      this.defaultorder="mostLikes";
+    }
     this.service.getDocuments().then((documents) => {
+      
       this.imageList = [];
       documents.forEach((doc) => {
         const url = doc.get("imageurl");
@@ -145,6 +187,7 @@ export class MainComponent implements OnInit{
       console.error('Hiba újratöltés közben:', error);
     });
   }
+  
 
  
 }

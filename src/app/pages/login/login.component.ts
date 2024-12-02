@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit{
 
   ngOnInit() :void{
     
-    //this.redirectResult();
   }
 
   async login(){
@@ -117,53 +116,7 @@ export class LoginComponent implements OnInit{
                 
               });
 
-      /*const authe = getAuth();
-      console.log("Google sign-in initiated");
-      signInWithRedirect(auth, this.provider)
-        .then(() => {
-          console.log("login success")
-          this.router.navigate(['/main']);
-        }).catch((error) => {
-          console.error("Hiba a Google-lel való bejelentkezéskor: " + error);
-
-        });*/
     }
 
-   /*redirectResult(){
-        const auth = getAuth();
-        console.log("Google sign-in initiated result");
-        getRedirectResult(auth).then((result) => {
-          console.log("haha " + result);
-          console.log("valami");
-          if (result) {
-            console.log("Result")
-            const user = result.user;
-            if (user) {
-              console.log("User"+ user.uid)
-              const addUser: User = {
-                id: user.uid,
-                username: user.displayName || '',
-                email: user.email || '',
-                lname: '',
-                fname: '',
-                favorites: [],
-                uploads: [],
-                comments: [],
-                followerCount: 0,
-                followingCount: 0,
-                following: [],
-                followedby: [],
-                intro: ''
-              }
-              
-              this.userService.create(addUser).then(() => {
-                this.router.navigate(['/main']);
-              });
-            }
-          }
-        }).catch((error) => {
-          console.error('Error handling redirect result:', error);
-        });
-   }*/
       
 }

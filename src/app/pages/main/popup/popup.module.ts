@@ -13,6 +13,8 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CommentUpdateComponent } from './comment-update/comment-update.component';
 import { CollectionPopupComponent } from './collection-popup/collection-popup.component'; 
 import { MatListModule } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { MatListModule } from '@angular/material/list';
     DatePipe,
     ReactiveFormsModule,
     MatButtonModule,
-    MatListModule
+    MatListModule,
+    TranslateModule,
   ]
 })
 export class PopupModule { }

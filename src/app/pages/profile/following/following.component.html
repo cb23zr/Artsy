@@ -1,24 +1,24 @@
 <mat-dialog-content>
-    <div>Követések</div>
+    <div>{{ 'followingUsers' | translate }}</div>
     <div class="search-bar-container">
       <button mat-icon-button>
         <mat-icon>search</mat-icon>
       </button>
-      <input id="search" type="text" placeholder="Keresés" [(ngModel)]="term">
+      <input id="search" type="text" placeholder="{{ 'search' | translate }}" [(ngModel)]="term">
     </div>
     <div *ngIf="followingUsers.length > 0; else noFollowing">
         <mat-list>
           <mat-list-item *ngFor="let user of followingUsers |filter: term">
             <a [routerLink]="['/profile', user.username]" (click)="dialogRef.close()" mat-line>{{ user.username }}</a>
-            <button *ngIf="user.id === this.data.uid || this.data.own" mat-button (click)="delete(user.username)">Törlés</button>
+            <button *ngIf="user.id === this.data.uid || this.data.own" mat-button (click)="delete(user.username)">{{ 'delete' | translate }}</button>
           </mat-list-item>
         </mat-list>
       </div>
       <ng-template #noFollowing>
-        <p>Még nem követsz senkit</p>
+        <p>{{ 'nofollowing' | translate }}</p>
       </ng-template>
 
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Vissza</button>
+    <button mat-button (click)="onNoClick()">{{ 'back' | translate }}</button>
 </mat-dialog-actions>

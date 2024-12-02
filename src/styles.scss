@@ -1,6 +1,10 @@
+@use '@angular/material' as mat;
+
+
 body{
-  background-color: rgb(60,60,60);
+  background-color: rgba(156, 189, 212, 0.768);
 }
+
 h1{
   padding-top: 30px;
   padding-bottom: 20px;
@@ -32,11 +36,55 @@ h1{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(98, 97, 97, 0.3);
+  background-color: rgba(30, 80, 196, 0.3);
 }
 
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
 
 html, body { height: 100%; }
+
+$custom-primary-palette: (
+  50: #e8eaf6,
+  100: #c5cae9,
+  200: #9fa8da,
+  300: #7986cb,
+  400: #5c6bc0,
+  500: #3f51b5,
+  600: #3949ab,
+  700: #303f9f,
+  800: #283593,
+  900: #1a237e,
+  contrast:(
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #fff,
+    400: #fff,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+  )
+);
+
+
+$custom-primary: mat.define-palette(mat.$blue-palette, 600, 800, 900);
+$custom-accent: mat.define-palette(mat.$pink-palette, 400, 500, 600);
+$custom-background: mat.define-palette(mat.$grey-palette, 50);
+$custom-warn: mat.define-palette(mat.$red-palette);
+
+$custom-theme: mat.define-light-theme(
+  (
+  color:(
+      primary: $custom-primary,
+      accent: $custom-accent,
+      backgound: $custom-background,
+      warn: $custom-warn,
+  ),  
+  )
+);
+
+@include mat.all-component-themes($custom-theme);
 
 

@@ -9,6 +9,9 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ControlErrorComponent } from "../../shared/error/controlError";
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from "@angular/material/card";
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { ControlErrorComponent } from "../../shared/error/controlError";
         MatInputModule,
         MatButtonModule,
         MatProgressSpinnerModule,
-        ControlErrorComponent
+        ControlErrorComponent,
+        TranslateModule,
+        MatIconModule,
+        MatCardModule
     ]
 })
 export class RegistrationModule { }

@@ -1,9 +1,9 @@
 <mat-dialog-content>
-    <h1>Komment módosítása</h1>
+    <h1>{{ 'commentUpdate' | translate }}</h1>
     <form [formGroup]="commentForm">
         <div>
             <mat-form-field>
-                <mat-label for="intro">Komment:</mat-label>
+                <mat-label for="intro">{{ 'comment' | translate }}:</mat-label>
                 <textarea matInput rows="7" cols="100" formControlName="comment"></textarea>
             </mat-form-field>
         </div>
@@ -11,12 +11,12 @@
             {{updatefail}}
           </div><br>
         <div>
-            <button mat-raised-button color="accent" (click)="updateComment()">Közzétesz</button>
+            <button mat-raised-button color="accent" (click)="updateComment()">{{ 'addComment' | translate }}</button>
         </div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Vissza</button>
+    <button mat-button (click)="onNoClick()">{{ 'back' | translate }}</button>
   </mat-dialog-actions>
   
 

@@ -16,6 +16,7 @@ import { CommentUpdateComponent } from './comment-update/comment-update.componen
 import { CollectionService } from 'src/app/shared/services/collection.service';
 import { CollectionPopupComponent } from './collection-popup/collection-popup.component';
 
+
 export interface DialogData {
   id: string;
   name: string;
@@ -55,8 +56,11 @@ export class PopupComponent implements OnInit, OnChanges {
     private fb: FormBuilder, private userService: UserService,
     private favService: FavoriteService,
     private uploadService: UploadService,
-    private router: Router, private collectionService: CollectionService
-   ) {}
+    private router: Router, private collectionService: CollectionService,
+    
+   ) {
+    
+   }
 
    ngOnChanges(): void {
     this.commService.getCommentbyId(this.data.id).subscribe(comments =>{

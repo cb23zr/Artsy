@@ -1,9 +1,9 @@
 <mat-dialog-content>
-    <h1>Bemutatkozás módosítása</h1>
+    <h1>{{ 'updateIntro' | translate }}</h1>
     <form [formGroup]="introForm">
         <div>
             <mat-form-field>
-                <mat-label for="intro">Bemutatkozás:</mat-label>
+                <mat-label for="intro">{{ 'intro' | translate }}:</mat-label>
                 <textarea matInput rows="7" cols="100" formControlName="intro"></textarea>
             </mat-form-field>
         </div>
@@ -11,11 +11,11 @@
             {{updatefail}}
           </div><br>
         <div>
-            <button mat-raised-button color="accent" (click)="updateIntro()">Közzétesz</button>
+            <button mat-raised-button color="accent" (click)="updateIntro()">{{ 'addComment' | translate }}</button>
         </div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Vissza</button>
+    <button mat-button (click)="onNoClick()">{{ 'back' | translate }}</button>
   </mat-dialog-actions>
   

@@ -5,24 +5,24 @@
     </mat-card-header>
 
     <mat-card-content *ngIf="user">
-        <div>{{user.intro ? user.intro : 'Bemutatkozás'}}
-          <button *ngIf="ownProfile" mat-button (click)="updateIntro(user.id, user.intro, user.username)">Módosítás</button>
+        <div>{{user.intro ? user.intro : "intro" | translate }}
+          <button *ngIf="ownProfile" mat-button (click)="updateIntro(user.id, user.intro, user.username)">{{ 'update' | translate }}</button>
         </div>
         <p><mat-icon>email</mat-icon>{{user.email }}</p><br><br>
-        <button *ngIf="!loggedinprofile" mat-flat-button (click)="follow()">{{isFollowed ? 'Követés visszavonása':'Követés'}}</button>
+        <button *ngIf="!loggedinprofile" mat-flat-button (click)="follow()">{{isFollowed ? ('unfollow' | translate): 'follow' | translate}}</button>
         <div (click)="openFollowerDialog()">
-          Követők:{{ followerCount }}
+          {{ 'followers' | translate }}:{{ followerCount }}
         </div>
         <div (click)="openFollowingDialog()">
-          Követések:{{ followingCount }}
+          {{ 'followingUsers' | translate }}:{{ followingCount }}
         </div>
-        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/img-collections'">Kollekciók</button>
-        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">Kép feltöltés</button>
+        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/img-collections'">{{ 'collections' | translate }}</button>
+        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">{{ 'imgUpload' | translate }}</button>
 
         <div class="image-container">
           <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.date, image.caption, user.username)">
         </div>
-        <button *ngIf="ownProfile" mat-button (click)="deleteProfile()">Profil törlése</button>
+        <button *ngIf="ownProfile" mat-button (click)="deleteProfile()">{{ 'deleteUser' | translate }}</button>
     </mat-card-content>
   </mat-card>
 </div>

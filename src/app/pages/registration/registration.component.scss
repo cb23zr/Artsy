@@ -1,9 +1,32 @@
-div {
+mat-card{
+  width: 60%;
+  height: 90%;
+  align-self: center;
+}
+
+.div-flex{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align:left;
+  height: 80%;
+}
+
+.signup_component{
+  height: 100vh;
+}
+
+.form-field {
   flex-direction: column;
   justify-content: center;
   text-align: center;
 
 }
+
+mat-form-field{
+  width: 400px;
+}
+
 form{
   display: inline-grid;
   align-self: center;
@@ -19,6 +42,8 @@ form{
 }
 
 span{
+  flex-direction: column;
+  justify-content: center;
   padding: 10px;
 }
 

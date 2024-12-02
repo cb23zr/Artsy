@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ErrorRoutingModule } from './error-routing.module';
 import { ErrorComponent } from './error.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { ErrorComponent } from './error.component';
   ],
   imports: [
     CommonModule,
-    ErrorRoutingModule
+    ErrorRoutingModule,
+    TranslateModule
   ]
 })
 export class ErrorModule { }

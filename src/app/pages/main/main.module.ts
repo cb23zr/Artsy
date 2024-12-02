@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrderFormatPipe } from 'src/app/shared/pipes/order-format.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -37,6 +38,7 @@ import { OrderFormatPipe } from 'src/app/shared/pipes/order-format.pipe';
     FlexLayoutModule,
     MatIconModule,
     Ng2SearchPipeModule,
+    TranslateModule
 ]
 })
 export class MainModule { }

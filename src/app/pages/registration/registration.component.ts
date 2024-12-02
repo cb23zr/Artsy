@@ -15,14 +15,19 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class RegistrationComponent {
 
   signupForm: FormGroup;
+  usernameError: string ="";
+  pswError: string = "";
+  showPassword: boolean = true;
+  showConfirmPassword: boolean = true;
+  fail:boolean = false;
 
   constructor(private fb: FormBuilder,private location: Location, private authService:AuthService, private router: Router, private userService: UserService) {
 
     this.signupForm = this.fb.group({
       id:[''],
-      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15)]],
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(25)]],
       email: ['', [Validators.required, Validators.email]],
-      psw: ['', [Validators.required, Validators.minLength(6)]],
+      psw: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[A-Z])(?=.*\\d).+$')]],
       repsw: ['', Validators.required],
       lname: ['', Validators.required],
       fname: ['', Validators.required],
@@ -40,6 +45,7 @@ export class RegistrationComponent {
 
 
     if(emailControl?.valid && emailControl != null && password == repassword ){
+      this.fail = false;
       const email = emailControl.value;
 
       this.authService.signup(email, password).then(cred => {
@@ -69,6 +75,7 @@ export class RegistrationComponent {
         console.error("Hiba:",error);
       });
     } else{
+      this.fail = true;
       console.error("Hibás regisztráció!");
     }
   }
@@ -77,6 +84,14 @@ export class RegistrationComponent {
     const password = control.get('psw')?.value;
     const confirmPsw = control.get('repsw')?.value;
     return password === confirmPsw ? null : { mismatch: true };
+  }
+
+  PswVisibility(){
+    this.showPassword = !this.showPassword;
+  }
+
+  PswConfirmVisibility(){
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   Back(){

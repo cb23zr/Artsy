@@ -21,12 +21,16 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { MatCardModule } from "@angular/material/card";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SearchBarComponent } from './shared/search-bar/search-bar.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+}
 
 
 @NgModule({
@@ -54,6 +58,13 @@ import { SearchBarComponent } from './shared/search-bar/search-bar.component';
     MatProgressSpinnerModule,
     MatCardModule,
     MatProgressBarModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     provideAuth(() => getAuth()),

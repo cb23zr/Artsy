@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { LoginPopupRoutingModule } from './login-popup-routing.module';
 import { LoginPopupComponent } from './login-popup.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { LoginPopupComponent } from './login-popup.component';
     MatButtonModule,
     MatDialogModule,
     CommonModule,
-    LoginPopupRoutingModule
+    LoginPopupRoutingModule,
+    TranslateModule
   ]
 })
 export class LoginPopupModule { }

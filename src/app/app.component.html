@@ -12,11 +12,14 @@
       </div>
       <div fxFlex fxLayout fxHide.xs>
         <ul class="menu" fxLayout fxLayoutGap="10px">
-          <li><a routerLink="/main">Főoldal</a></li>
-          <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
-          <li *ngIf="!(loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
-          <li *ngIf="loggedInUser"><a routerLink="/profile" (click)="login()">Profil</a></li>
-          <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
+          <li><a routerLink="/main">{{ 'mainPage' | translate }}</a></li>
+          <li *ngIf="!(loggedInUser)"><a routerLink="/login">{{ 'login' | translate }}</a></li>
+          <li *ngIf="!(loggedInUser)"><a routerLink="/registration">{{ 'registration' | translate }}</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/profile" (click)="login()">{{ 'profile' | translate }}</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logout()">{{ 'logout' | translate }}</a></li>
+          <li>
+            <button mat-raised-button (click)="switchLanguage()">{{langSelect}}</button>
+          </li>
         </ul>
       </div>
       <div><img src="assets/articon.png" height="70" width="70"></div>

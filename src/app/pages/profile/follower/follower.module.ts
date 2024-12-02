@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule,
     MatIconModule,
     Ng2SearchPipeModule,
+    TranslateModule,
   ]
 })
 export class FollowerModule { }

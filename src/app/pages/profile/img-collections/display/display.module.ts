@@ -8,7 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
     CdkTableModule,
     MatOptionModule,
     MatCardModule,
+    TranslateModule,
   ]
 })
 export class DisplayModule { }
