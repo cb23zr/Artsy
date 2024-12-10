@@ -28,10 +28,7 @@ export class UserService {
       const docRef = doc(this.db,"users", user.id);
       const docSnap = await getDoc(docRef);
       
-        await setDoc(doc(this.db, 'users', user.id), user);
-    
-      
-      
+      await setDoc(doc(this.db, 'users', user.id), user);
       
     } catch (error) {
       console.error('Hiba a user dokumentum készítése közben:', error);
@@ -45,13 +42,13 @@ export class UserService {
     
     return from(getDocs(q).then(querySnapshot => {
       if (querySnapshot.empty) {
-        console.log('No matching documents.');
+        console.log('Nincs ilyen dokumentum.');
         return null;
       }
       const userDoc = querySnapshot.docs[0];
       return userDoc.data() as User;
     }).catch(error => {
-      console.error('Error getting documents: ', error);
+      console.error('Hiba: ', error);
       return null;
     }));
   }
@@ -72,7 +69,7 @@ export class UserService {
         if (user) {
           return user;
         } else {
-          throw new Error('User not found');
+          throw new Error('Felhasználó nem található');
         }
       })
     );
@@ -161,7 +158,7 @@ export class UserService {
       };
 
       const user = getAuth().currentUser;
-    user?.delete().then(() => {
+      user?.delete().then(() => {
           console.log("Sikeres felhasználó törlés");
           this.authService.logout().then(()=>{
             localStorage.setItem('user', JSON.stringify('null'))

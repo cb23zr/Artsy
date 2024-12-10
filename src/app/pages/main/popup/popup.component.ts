@@ -171,7 +171,7 @@ export class PopupComponent implements OnInit, OnChanges {
       const favCount = await this.favService.getImageFavCount(this.data.id);
       this.favCount = favCount;
     } catch (error) {
-      console.error('Error loading image fav count:', error);
+      console.error('Hiba a kedvelések számának betöltése közben:', error);
     }
   }
 

@@ -90,7 +90,7 @@ export class DisplayComponent {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      console.log('A dialog bezárult', result);
     });
     }
   }

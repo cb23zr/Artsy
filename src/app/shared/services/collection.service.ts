@@ -36,7 +36,7 @@ export class CollectionService {
         collections: arrayUnion(coll.id),
       });
     }else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
   }
 

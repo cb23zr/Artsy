@@ -13,7 +13,7 @@
         <mat-form-field appearance="outline">
           <mat-label for="psw">{{ 'psw' | translate }}: </mat-label>
           <input matInput [type]="showPassword ? 'password' : 'text'" id="psw" formControlName="psw">
-          <button mat-icon-button matSuffix type="button" (click)="PswVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+          <button id="visibility" mat-icon-button matSuffix type="button" (click)="PswVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
             <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>

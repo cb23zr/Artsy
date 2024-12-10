@@ -1,12 +1,11 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {FormControl, Validators, FormGroupDirective, FormGroup, FormBuilder} from "@angular/forms";
 import {Router} from "@angular/router";
-import {LoadService} from "../../shared/services/load.service";
 import {AuthService} from "../../shared/services/auth.service";
 import {  getAuth, signInWithPopup,GoogleAuthProvider } from "firebase/auth";
 import { UserService } from 'src/app/shared/services/user.service';
 import { User } from 'src/app/shared/models/User';
-import { getRedirectResult, signInWithRedirect } from '@angular/fire/auth';
+
 
 
 @Component({
@@ -23,7 +22,7 @@ export class LoginComponent implements OnInit{
   provider = new GoogleAuthProvider();
 
   constructor(private fb: FormBuilder, private router: Router,
-   private loadingService: LoadService, private authService: AuthService,
+  private authService: AuthService, 
   private userService: UserService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -68,17 +67,14 @@ export class LoginComponent implements OnInit{
 
     signInWithGoogle(){
       const auth = getAuth();
-      console.log("Google sign-in initiated");
+      console.log("Google bejelentkezés inicializálva");
         signInWithPopup(auth, this.provider)
           .then((result) => {
-            console.log("Google sign-in initiated res");
-                
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 if(credential!== null){
-                  console.log("Google sign-in cred not null");
+                  console.log("Google bejelentkezés cred nem null");
                   const token = credential.accessToken;
                 }
-               
                 const user = result.user;
                 if (user) {
                   console.log("User"+ user.uid)
@@ -112,7 +108,7 @@ export class LoginComponent implements OnInit{
                
               }).catch((error) => {
                 const credential = GoogleAuthProvider.credentialFromError(error);
-                console.error("Google sign-in failed");
+                console.error("Hiba Google bejelentkezés közben");
                 
               });
 

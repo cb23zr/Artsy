@@ -24,7 +24,7 @@ export class CommentService {
       await setDoc(doc(this.db, 'comments', comment.id), comment);
       this.refreshComments(comment.imageId);
     } catch (error) {
-      console.error('Hiba a comment készítése közben:', error);
+      console.error('Hiba a komment készítése közben:', error);
       throw error;
     }
 
@@ -40,7 +40,7 @@ export class CommentService {
         comments: arrayUnion(comment.id),
       });
     }else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
   }
@@ -81,7 +81,7 @@ export class CommentService {
 
 
   async delete(userId: string, commentId:string): Promise<void>{
-    console.log('Deleting comment with ID:', commentId);
+    console.log('Komment törlése:', commentId);
     console.log('For user:', userId);
     await deleteDoc(doc(this.db, "comments", commentId));
 
@@ -96,7 +96,7 @@ export class CommentService {
         comments: arrayRemove(commentId),
       });
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
   }

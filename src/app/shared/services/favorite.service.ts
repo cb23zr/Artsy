@@ -38,7 +38,7 @@ export class FavoriteService {
 
       const userData = userDoc.data();
       if (userData.favorites && userData.favorites.includes(imageId)) {
-        console.log("Image already favorited by user");
+        console.log("A kép már szerepel a kedvelések között!");
         return; 
       }
       
@@ -47,7 +47,7 @@ export class FavoriteService {
       });
       await this.updateFavCount(imageId, 1)
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
     const imagesRef = collection(this.db, "images");
@@ -61,7 +61,7 @@ export class FavoriteService {
         favUsers: arrayUnion(userName),
       });
     } else {
-      console.error("Image not found");
+      console.error("Kép nem található");
     }
 
   }
@@ -78,7 +78,7 @@ export class FavoriteService {
         favCount: increment(count)
       });
     } else {
-      console.error("Image not found");
+      console.error("Kép nem található");
     }
   }
 
@@ -92,7 +92,7 @@ export class FavoriteService {
       console.log(imageData); 
       return imageData.favCount || 0;
     } else {
-      console.error("Image not found");
+      console.error("Kép nem található");
       return 0;
     }
   }
@@ -110,7 +110,7 @@ export class FavoriteService {
       });
       await this.updateFavCount(imageId, -1);
     } else {
-      console.error("Image not found");
+      console.error("Kép nem található");
     }
 
     const userRef = collection(this.db, "users");
@@ -125,7 +125,7 @@ export class FavoriteService {
         favorites: arrayRemove(imageId),
       });
     } else {
-      console.error("User not found");
+      console.error("Kép nem található");
     }
 
   }

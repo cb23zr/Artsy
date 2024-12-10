@@ -7,13 +7,17 @@
       <mat-form-field appearance="outline">
         <mat-label> {{ 'username' | translate }}: </mat-label>
         <input matInput type="text" id="username" name="username" formControlName="username">
-        <mat-error *ngIf="signupForm.get('username')?.hasError('minlength')">
-          {{ 'usernameMinErr' | translate }}
-        </mat-error>
-        <mat-error *ngIf="signupForm.get('username')?.hasError('maxlength')">
-          {{ 'usernameMaxErr' | translate }}
-        </mat-error>
       </mat-form-field>
+      <div  class="error-message" *ngIf="signupForm.get('username')?.hasError('minlength')">
+      <mat-error>
+        {{ 'usernameMinErr' | translate }}
+      </mat-error>
+      </div>
+      <div  class="error-message" *ngIf="signupForm.get('username')?.hasError('maxlength')">
+      <mat-error>
+        {{ 'usernameMaxErr' | translate }}
+      </mat-error>
+      </div>
 
       <mat-form-field appearance="outline">
         <mat-label> {{ 'email' | translate }} </mat-label>
@@ -34,13 +38,17 @@
         <button mat-icon-button matSuffix type="button"  (click)="PswVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
           <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        <mat-error *ngIf="signupForm.get('psw')?.hasError('pattern')">
+      </mat-form-field>
+      <div class="error-message" *ngIf="signupForm.get('psw')?.hasError('pattern')">
+        <mat-error>
           {{ 'pswPatternErr' | translate }}
         </mat-error>
-        <mat-error *ngIf="signupForm.get('psw')?.hasError('minlength')">
+      </div>
+      <div  class="error-message" *ngIf="signupForm.get('psw')?.hasError('minlength')">
+        <mat-error>
           {{ 'pswLengthErr' | translate }}
         </mat-error>
-      </mat-form-field><br>
+      </div>
 
       <mat-form-field appearance="outline">
         <mat-label>{{ 'pswconfirm' | translate }}: </mat-label>

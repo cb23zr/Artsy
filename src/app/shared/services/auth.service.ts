@@ -27,7 +27,8 @@ export class AuthService {
   }
 
   signup(email: any, psw: any) {
-    return this.auth.createUserWithEmailAndPassword(email, psw).then((userCredential)=>{
+    return this.auth.createUserWithEmailAndPassword(email, psw)
+    .then((userCredential)=>{
       const userCred = userCredential.user;
       return userCred;
     }).catch((error) => {

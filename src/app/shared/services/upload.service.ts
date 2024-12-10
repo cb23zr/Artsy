@@ -105,7 +105,7 @@ export class UploadService {
         uploads: arrayUnion(imageId),
       });
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
   }

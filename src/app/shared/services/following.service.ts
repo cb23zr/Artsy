@@ -43,7 +43,7 @@ export class FollowingService {
 
       const userData = userDoc.data();
       if (userData.followed && userData.followed.includes(userId)) {
-        console.log("Profile already followed by user");
+        console.log("A kép már hozzá van adva a kedvencekhez");
         return; 
       }
       
@@ -52,7 +52,7 @@ export class FollowingService {
       });
       await this.updateFollowerCount(userId,userName, 1)
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
     const otherUserRef = collection(this.db, "users");
@@ -66,7 +66,7 @@ export class FollowingService {
         following: arrayUnion(userName),
       });
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
   }
@@ -83,7 +83,7 @@ export class FollowingService {
         followerCount: increment(count)
       });
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
     const otherUserRef = collection(this.db, "users");
@@ -97,7 +97,7 @@ export class FollowingService {
         followingCount: increment(count)
       });
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
   }
 
@@ -111,7 +111,7 @@ export class FollowingService {
       console.log(userData); 
       return userData.followerCount || 0;
     } else {
-      console.error("user not found");
+      console.error("Felhasználó nem található");
       return 0;
     }
   }
@@ -126,7 +126,7 @@ export class FollowingService {
       console.log(userData); 
       return userData.followingCount || 0;
     } else {
-      console.error("user not found");
+      console.error("Felhasználó nem található");
       return 0;
     }
   }
@@ -144,7 +144,7 @@ export class FollowingService {
       });
       await this.updateFollowerCount(userId,userName, -1);
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
     const userRef = collection(this.db, "users");
@@ -159,7 +159,7 @@ export class FollowingService {
         followedby: arrayRemove(userId),
       });
     } else {
-      console.error("User not found");
+      console.error("Felhasználó nem található");
     }
 
   }

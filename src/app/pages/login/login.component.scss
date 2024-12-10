@@ -26,12 +26,18 @@ form.form-container {
 
 mat-form-field {
   width: 100%; 
+  display: flex;
+  justify-content: center;
   margin-bottom: 5px;
 }
 
 button {
   width: 100%; 
   margin: 10px 0;
+}
+
+#visibility{
+  margin: 0;
 }
 
 .error-message {

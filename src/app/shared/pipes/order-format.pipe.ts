@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { merge } from 'rxjs';
 
 @Pipe({
   name: 'orderFormat'
@@ -10,13 +9,11 @@ export class OrderFormatPipe implements PipeTransform {
       if (!array) return [];
       const oneWeek = new Date();
       oneWeek.setDate(oneWeek.getDate() - 7);
-  
       switch (sortBy) {
-        
         default:
           const following = array.filter((a) => a.onTheList === true  && new Date(a.date) >= oneWeek);
           const followingByDate = following.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-          const other = array.filter((a) => a.onTheList === false);
+          const other = array.filter((a) => !(following.includes(a)));
           const otherByDate = other.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
           return [...followingByDate, ...otherByDate];
         case 'datenew':
@@ -30,8 +27,6 @@ export class OrderFormatPipe implements PipeTransform {
         case 'following':
           const follow = array.filter((a) => a.onTheList === true);
           return follow.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-       
       }
     }
-
 }
