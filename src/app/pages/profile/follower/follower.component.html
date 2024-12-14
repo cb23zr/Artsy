@@ -10,7 +10,7 @@
         <mat-list>
           <mat-list-item *ngFor="let user of followerUsers |filter: term">
             <a [routerLink]="['/profile', user.username]" (click)="dialogRef.close()" mat-line>{{ user.username }}</a>
-            <button *ngIf="user.id === this.data.uid || this.data.own" mat-button (click)="delete(user.username)">{{ 'delete' | translate }}</button>
+            <button *ngIf="user.id === this.data.uid || this.data.own" mat-button (click)="delete(data.username, data.actualid)">{{ 'delete' | translate }}</button>
           </mat-list-item>
         </mat-list>
       </div>

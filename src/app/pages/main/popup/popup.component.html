@@ -1,13 +1,13 @@
 <mat-dialog-content>
   <div class="content-container">
-    <a [routerLink]="['/profile', data.name]" (click)="dialogRef.close()">{{data.name}}</a><br>
+    <a [routerLink]="['/profile', data.name]" (click)="dialogRef.close()">{{data.name}}</a>
     <div>{{data.date| date:'yyyy-MM-dd HH:mm'}}</div>
     <img [src]="data.imageUrl" alt="Selected Image" class="selected-image">
     <div class="br"></div>
     <div>{{data.caption}}</div>
-    <button mat-raised-button color="primary" (click)="onAddFavorit()">{{isFavorite ?  ("like" | translate) : ("likeoff" | translate)}}</button>
-    <div>
-      {{ "likeCount" | translate }}:{{ favCount }}
+    <button mat-raised-button color="primary" (click)="onAddFavorit()">{{isFavorite ?  ("likeoff" | translate) : ("like" | translate)}}</button>
+    <div> 
+      {{ favCount }} <mat-icon>favorite</mat-icon>
     </div>
     <div class="br"></div>
     <div id="bejegyzes">
@@ -19,9 +19,9 @@
             </mat-form-field>
           </div>
           <div>
-            <mat-form-field>
+            <mat-form-field appearance="outline">
               <mat-label for="comment">{{ "comment" | translate }}:</mat-label>
-              <textarea matInput rows="7" cols="100" formControlName="comment"></textarea>
+              <textarea id="textarea" matInput rows="7" cols="100" formControlName="comment"></textarea>
             </mat-form-field>
           </div>
           <div class="br"></div>
@@ -54,8 +54,8 @@
           <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef> {{ "delete" | translate }} </th>
             <td mat-cell *matCellDef="let comment">
-            <button *ngIf="user && comment.uname === user.username" mat-button (click)="deleteComment(comment.id)">{{ "delete" | translate }}</button>
-            <button *ngIf="user && comment.uname === user.username" mat-button (click)="updateComment(comment.id, comment.comment)">{{ "update" | translate }}</button>
+            <button *ngIf="(user && comment.uname === user.username) || role ==='admin'" mat-button (click)="deleteComment(comment.id, comment.userId)">{{ "delete" | translate }}</button>
+            <button *ngIf="(user && comment.uname === user.username) || role ==='admin'" mat-button (click)="updateComment(comment.id, comment.comment)">{{ "update" | translate }}</button>
             </td>
           </ng-container>
           
@@ -68,6 +68,6 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="primary" (click)="saveToCollection(data.id)">{{ "save" | translate }}</button>
-  <button *ngIf="data?.name === this.user?.username" mat-button (click)="deletePic()">{{ "delete" | translate }}</button>
+  <button *ngIf="data?.name === this.user?.username || role ==='admin'" mat-button (click)="deletePic()">{{ "delete" | translate }}</button>
 </mat-dialog-actions>
 

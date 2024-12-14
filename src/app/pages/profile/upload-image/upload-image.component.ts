@@ -23,8 +23,9 @@ export class UploadImageComponent {
   
   formTemplate = new FormGroup({
     id: new FormControl(""),
+    userId: new FormControl(""),
     caption: new FormControl("", Validators.required),
-    category: new FormControl(""),
+    category: new FormControl("",Validators.required), 
     imageUrl: new FormControl("",Validators.required),
     username: new FormControl(""),
     favCount: new FormControl("0"),
@@ -42,13 +43,13 @@ export class UploadImageComponent {
 
    ngOnInit(){
     this.resetForm();
-  
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     this.userService.getByIdObservable(user.uid).subscribe(data => {
       console.log(data);
       if (data) {
         this.user = data;
         this.formTemplate.get('username')?.setValue(this.user.username);
+        this.formTemplate.get('userId')?.setValue(user.uid);
       }
       },error =>{
         console.error(error);
@@ -68,6 +69,7 @@ export class UploadImageComponent {
   }
   
   onSubmit(formValue: any){
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     this.isSubmitted = true;
     if(this.formTemplate.valid){
       const filePath = `${formValue.category}/${this.selectedImage.name.split('.').slice(0,-1).join('.')}_${new Date().getTime()}`;
@@ -100,6 +102,7 @@ export class UploadImageComponent {
     this.formTemplate.reset();
     this.formTemplate.setValue({
       id:'',
+      userId:'',
       caption:'',
       imageUrl:'',
       category:'Person',
@@ -108,6 +111,18 @@ export class UploadImageComponent {
       favUsers: '',
       date: '',
     })
+
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+    this.userService.getByIdObservable(user.uid).subscribe(data => {
+      console.log(data);
+      if (data) {
+        this.user = data;
+        this.formTemplate.get('username')?.setValue(this.user.username);
+        this.formTemplate.get('userId')?.setValue(user.uid);
+      }
+      },error =>{
+        console.error(error);
+      });
     this.imgSrc= 'assets/placeholder.jpg';
     this.selectedImage= null;
     this.isSubmitted = false;

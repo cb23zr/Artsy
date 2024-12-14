@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {FormControl, Validators, FormGroupDirective, FormGroup, FormBuilder} from "@angular/forms";
+import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../shared/services/auth.service";
 import {  getAuth, signInWithPopup,GoogleAuthProvider } from "firebase/auth";
@@ -69,12 +69,13 @@ export class LoginComponent implements OnInit{
       const auth = getAuth();
       console.log("Google bejelentkezés inicializálva");
         signInWithPopup(auth, this.provider)
-          .then((result) => {
+          .then(async (result) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 if(credential!== null){
                   console.log("Google bejelentkezés cred nem null");
                   const token = credential.accessToken;
                 }
+
                 const user = result.user;
                 if (user) {
                   console.log("User"+ user.uid)
@@ -92,10 +93,12 @@ export class LoginComponent implements OnInit{
                     followingCount: 0,
                     following: [],
                     followedby: [],
-                    intro: ''
+                    intro: '',
+                    role: 'user'
                   }
-                  const userExists = this.userService.getById(addUser.id);
-                  if(userExists == undefined){
+                  
+                  const docExist = await this.userService.getById(addUser.id);
+                  if(docExist == undefined){
                     this.userService.create(addUser).then(() => {
                     this.router.navigate(['/main']);
                   });

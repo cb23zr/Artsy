@@ -66,7 +66,7 @@ export class RegistrationComponent {
           following:[],
           followedby:[],
           intro:"",
-
+          role:"user"
         };
         this.userService.create(user)
       }

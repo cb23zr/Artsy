@@ -13,5 +13,6 @@ export interface User{
   following: [];
   followedby: [];
   intro: string;
+  role: string;
 }
 

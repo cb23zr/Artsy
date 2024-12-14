@@ -2,7 +2,7 @@
     <h1>{{ 'commentUpdate' | translate }}</h1>
     <form [formGroup]="commentForm">
         <div>
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label for="intro">{{ 'comment' | translate }}:</mat-label>
                 <textarea matInput rows="7" cols="100" formControlName="comment"></textarea>
             </mat-form-field>

@@ -27,21 +27,26 @@ export class ImgCollectionsComponent {
 
   ngOnInit(){
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
-    this.userService.getByIdObservable(user.uid).subscribe(data =>{
-        if(data){
-          this.username = data.username;
-          this.userId = data.id;
-          console.log(this.userId);
+    this.onChange(user.uid);
+    
+  }
 
-          if(this.username !== undefined){
-            this.collectionService.getCollection(this.username).subscribe(collections =>{
-              this.collections = collections;
-            });
-          }
+  onChange(uid: string){
+    this.collections = [];
+    this.userService.getByIdObservable(uid).subscribe(data =>{
+      if(data){
+        this.username = data.username;
+        this.userId = data.id;
+        console.log(this.userId);
+
+        if(this.username !== undefined){
+          this.collectionService.getCollection(this.username).subscribe(collections =>{
+            this.collections = collections;
+          });
         }
-    })
-    
-    
+      }
+  }) 
+
   }
 
   newClicked(){
@@ -49,12 +54,14 @@ export class ImgCollectionsComponent {
   }
 
   newImgCollection(){
+    const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if(this.collectionForm.valid){
       const titleOfColl = this.collectionForm.get('title')?.value;
       if(titleOfColl !== undefined && titleOfColl !== null){
         const coll : Collection = {
           id: this.generateId(),
           username: this.username,
+          userId: user.uid,
           title: titleOfColl,
           date: new Date(),
           images: [],
@@ -62,6 +69,7 @@ export class ImgCollectionsComponent {
         }
         this.collectionService.create(coll,this.userId);
         this.newCollection= false;
+        this.onChange(user.uid);
       }
   }else{
     console.error("Hibás űrlap!");

@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrderFormatPipe } from 'src/app/shared/pipes/order-format.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -38,7 +39,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FlexLayoutModule,
     MatIconModule,
     Ng2SearchPipeModule,
-    TranslateModule
+    TranslateModule,
+    MatProgressSpinnerModule,
 ]
 })
 export class MainModule { }

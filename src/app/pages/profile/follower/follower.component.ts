@@ -16,7 +16,7 @@ export class FollowerComponent implements OnInit{
 
   constructor(
     public dialogRef: MatDialogRef<FollowerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { followedby: string[], username:string, uid:string, own: boolean },
+    @Inject(MAT_DIALOG_DATA) public data: { followedby: string[], username:string, uid:string, own: boolean, actualid:string },
     public dialog: MatDialog,
     private userService: UserService,
     private followService: FollowingService,
@@ -39,10 +39,10 @@ export class FollowerComponent implements OnInit{
     });
   }
 
-  async delete(username: string){
+  async delete(username: string, id: string){
     console.log(this.data.uid +" és followers: "+ username);
-    await this.followService.unFollow(this.data.uid, username);
-    this.followerUsers = this.followerUsers.filter(user => user.username !== username);
+    await this.followService.unFollow(this.data.uid, username, id);
+    this.followerUsers = this.followerUsers.filter(user => user.id !== this.data.uid);
   }
 
 

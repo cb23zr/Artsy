@@ -14,6 +14,7 @@ import { CommentUpdateComponent } from './comment-update/comment-update.componen
 import { CollectionPopupComponent } from './collection-popup/collection-popup.component'; 
 import { MatListModule } from '@angular/material/list';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -37,6 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatButtonModule,
     MatListModule,
     TranslateModule,
+    MatIconModule
   ]
 })
 export class PopupModule { }

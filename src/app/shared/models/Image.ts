@@ -4,6 +4,7 @@ export interface Image{
     category: string;
     imageUrl: string;
     username: string;
+    userId: string;
     favCount: number;
     favUsers: [];
     date: Date;

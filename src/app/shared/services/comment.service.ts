@@ -83,20 +83,30 @@ export class CommentService {
   async delete(userId: string, commentId:string): Promise<void>{
     console.log('Komment törlése:', commentId);
     console.log('For user:', userId);
-    await deleteDoc(doc(this.db, "comments", commentId));
+    try{
+      await deleteDoc(doc(this.db, "comments", commentId));
+      console.log("Komment dokumentum sikeres törlés!")
+    }catch{
+      console.error("Hiba a komment dokumentum törlése közben")
+    }
 
-    const userRef = collection(this.db, "users");
-    const q = query(userRef, where('id', '==', userId));
-    const userDocs = await getDocs(q);
+    try{
+      const userRef = collection(this.db, "users");
+      const q = query(userRef, where('id', '==', userId));
+      const userDocs = await getDocs(q);
 
-    if (!userDocs.empty) {
-      const userDoc = userDocs.docs[0];
-      const userDocRef = doc(this.db, "users", userDoc.id);
-      await updateDoc(userDocRef, {
-        comments: arrayRemove(commentId),
-      });
-    } else {
-      console.error("Felhasználó nem található");
+      if (!userDocs.empty) {
+        const userDoc = userDocs.docs[0];
+        const userDocRef = doc(this.db, "users", userDoc.id);
+        await updateDoc(userDocRef, {
+          comments: arrayRemove(commentId),
+        });
+        console.log("Sikeres módosítás");
+      } else {
+        console.error("Felhasználó nem található");
+      }
+    }catch{
+      console.error("Hiba módosítás közben");
     }
 
   }

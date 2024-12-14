@@ -53,7 +53,7 @@ export class UserService {
     }));
   }
 
-  async getById(id:string): Promise<User | undefined>{
+  async getById(id:string){
     const docRef = doc(this.db,"users", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -62,6 +62,19 @@ export class UserService {
       return undefined;
     } 
   }
+
+  async exist(id:string){
+    const docRef = doc(this.db,"users", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return true;
+    } else {
+      return false;
+    } 
+    
+  }
+
+
 
   getByIdObservable(id: string) {
     return from(this.getById(id)).pipe(

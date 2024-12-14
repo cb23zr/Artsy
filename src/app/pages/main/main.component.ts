@@ -1,23 +1,14 @@
-import {Component, OnInit, PipeTransform} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {Comment} from "../../shared/models/Comment";
 import {Router} from "@angular/router";
 import { UploadService } from 'src/app/shared/services/upload.service';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import { PopupComponent } from './popup/popup.component';
 import { LoginPopupComponent } from '../login-popup/login-popup.component';
 import { Timestamp } from '@angular/fire/firestore';
-import { OrderFormatPipe } from 'src/app/shared/pipes/order-format.pipe';
 import { UserService } from 'src/app/shared/services/user.service';
-import { User } from 'src/app/shared/models/User';
+
 
 
 
@@ -34,20 +25,12 @@ export class MainComponent implements OnInit{
   defaultorder: any = "";
   following: boolean = false;
   user! : any;
+  loading:boolean = false;
   
   followingList!: any[];
   emptyList: boolean = false;
   imageList!: any[];
   rowIndexArray!: any[];
-
-  comments: Array<any> = [];
-  commentForm = this.createForm({
-    uname: '',
-    comment: '',
-    date: new Date(),
-    imageId: '',
-    id: ''
-  });
 
 
 
@@ -58,7 +41,7 @@ export class MainComponent implements OnInit{
   }
 
   async ngOnInit(){
-
+    this.loading = true;
     this.user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if(this.user){
       this.defaultorder = "default";
@@ -79,6 +62,7 @@ export class MainComponent implements OnInit{
 
 
     try {
+
       if(this.user){
       const documents = await this.service.getDocuments();
       this.imageList = [];
@@ -92,15 +76,18 @@ export class MainComponent implements OnInit{
         const favCount = doc.get('favCount');
 
         if(url){
-          for(const user of this.followingList){
-            if(user === name){
-              this.following = true;
-            }else{
-              this.following = false;
+            if(this.followingList){
+              for(const user of this.followingList){
+                if(user === name){
+                  this.following = true;
+                }else{
+                  this.following = false;
+                }
+              }
             }
-          }
           const onTheList = this.following;
           this.imageList.push({id,url,name, date, caption, favCount, onTheList});
+          this.loading = false;
         }
         })
       }else{
@@ -117,15 +104,17 @@ export class MainComponent implements OnInit{
 
           if(url){
             const onTheList = this.following;
+            console.log(name);
             this.imageList.push({id,url,name, date, caption, favCount, onTheList});
+            this.loading = false;
           }
           })
       }
       } catch (error) {
+      this.loading = false;
       console.error('Hiba a FireStore dokumentumok lekérése közben:', error);
     }
     
-
   }
 
   createForm(model: Comment){
@@ -135,24 +124,25 @@ export class MainComponent implements OnInit{
     return formGroup;
   }
 
-  openDialog(id: string, imageurl:string, name: string, date: Timestamp, caption: string): void {
+  openDialog(id: string, imageurl:string, name: string, date: Timestamp, caption: string, userId: string): void {
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if (user && name !== undefined) {
       
       const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: name, imageUrl: imageurl, date:date, caption: caption},
+      data: {id: id ,name: name, imageUrl: imageurl, date:date, caption: caption, userId: userId},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('A dialog be lett zárva', result);
-      this.reloadData();
+      this.loadData();
     });
     }else{
-      const dialogRef = this.dialog.open(LoginPopupComponent,{})
+      this.dialog.open(LoginPopupComponent,{})
     }
   }
 
-  reloadData(): void {
+  loadData(): void {
+  
     this.user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
     if(this.user){
       this.defaultorder = "default";
@@ -161,7 +151,6 @@ export class MainComponent implements OnInit{
     }
     this.service.getDocuments().then((documents) => {
       
-      this.imageList = [];
       documents.forEach((doc) => {
         const url = doc.get("imageurl");
         const id = doc.get('id');
@@ -172,15 +161,19 @@ export class MainComponent implements OnInit{
         const favCount = doc.get('favCount');
 
         if (url) {
-          for(const user of this.followingList){
-            if(user === name){
-              this.following = true;
-            }else{
-              this.following = false;
+      
+          if(this.followingList){
+            for(const user of this.followingList){
+              if(user === name){
+                this.following = true;
+              }else{
+                this.following = false;
+              }
             }
           }
           const onTheList = this.following;
           this.imageList.push({ id, url, name, date, caption, favCount, onTheList});
+          
         }
       });
     }).catch(error => {

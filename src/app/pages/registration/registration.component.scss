@@ -1,10 +1,10 @@
 mat-card {
-  width: 90%; /* Make it take most of the width on smaller screens */
-  max-width: 600px; /* Limit the maximum width */
-  height: auto; /* Allow height to adjust dynamically */
-  margin: 20px auto; /* Center the card horizontally with margin */
+  width: 90%;
+  max-width: 600px;
+  height: auto;
+  margin: 20px auto;
   align-self: center;
-  padding: 20px; /* Add padding for better spacing */
+  padding: 20px;
 }
 
 .div-flex {
@@ -13,42 +13,44 @@ mat-card {
   justify-content: center;
   text-align: left;
   height: 100%;
-  padding: 10px; /* Add padding for smaller screens */
+  padding: 10px;
 }
 
 .signup_component {
-  height: auto; /* Allow the component height to adjust dynamically */
+  height: auto;
   padding: 20px;
 }
 
 .form-field {
+
   display: flex;
+  text-align: center;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  /* Add spacing between form fields */
+  
 }
 
 mat-form-field {
-  width: 100%; /* Make form fields take full width on smaller screens */
-  max-width: 400px; /* Limit the maximum width */
+  width: 100%; 
+  max-width: 400px;
   margin-bottom: 0px;
+
+
 }
 
 form {
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
-   /* Add spacing between form elements */
+  flex-direction: column;
+  align-items: center;
 }
 
 .button {
   display: flex;
-  flex-direction: row; /* Buttons side-by-side */
+  flex-direction: row;
   justify-content: center;
-  gap: 10px; /* Add spacing between buttons */
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
+  gap: 10px;
+  flex-wrap: wrap;
+ }
 
 span {
   display: flex;
@@ -66,44 +68,25 @@ span {
 
 @media (max-width: 768px) {
   mat-card {
-    width: 95%; /* Expand card to occupy more space */
+    width: 95%;
     margin: 10px;
   }
 
   .form-field {
-    gap: 10px; /* Reduce spacing for smaller screens */
+    gap: 10px;
   }
 
   mat-form-field {
-    width: 100%; /* Full width for inputs */
+
+    width: 100%;
   }
 
   form {
-    gap: 15px; /* Reduce spacing for smaller screens */
+    gap: 15px;
   }
 
   .button {
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 10px; /* Reduce spacing between buttons */
-  }
-}
-
-@media (max-width: 480px) {
-  mat-card {
-    width: 100%; /* Full-width for very small screens */
-    margin: 0;
-    padding: 15px;
-  }
-
-  .form-field {
-    gap: 8px; /* Further reduce spacing */
-  }
-
-  mat-form-field {
-    font-size: 0.9em; /* Adjust font size for smaller screens */
-  }
-
-  .button {
-    gap: 8px; /* Reduce spacing between buttons */
+    flex-direction: column;
+    gap: 10px;
   }
 }

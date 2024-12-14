@@ -24,6 +24,7 @@ export interface DialogData {
   date: Date;
   caption: string;
   username: string;
+  userId: string;
 }
 
 @Component({
@@ -40,6 +41,7 @@ export class PopupComponent implements OnInit, OnChanges {
   commentForm = this.createForm({
     id: this.generateId(),
     uname: '',
+    userId: '',
     comment:'',
     date:new Date(),
     imageId: this.data.id,
@@ -48,6 +50,7 @@ export class PopupComponent implements OnInit, OnChanges {
   favCount: number = 0;
   isFavorite: boolean = false;
   followers: string[] = [];
+  role: string = "user";
 ;
 
   constructor(
@@ -71,14 +74,18 @@ export class PopupComponent implements OnInit, OnChanges {
    ngOnInit(){
     const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
 
-
-
     if(user){
     this.userService.getByIdObservable(user.uid).subscribe(async data => {
       if (data && data.username) {
         this.user = data;
         this.commentForm.get('uname')?.setValue(this.user.username);
+        this.commentForm.get('userId')?.setValue(user.uid);
         this.isFavorite = await this.favService.isFavorite(this.data.id, this.user.username);
+        if(this.user.role === "admin"){
+          this.role = "admin";
+        }else{
+          this.role= "user";
+        }
         }
       },error =>{
         console.error(error);
@@ -127,8 +134,8 @@ export class PopupComponent implements OnInit, OnChanges {
       }
   }
 
-  async deleteComment(commentId: string){
-    await this.commService.delete(this.user.id,commentId);
+  async deleteComment(commentId: string, userId: string){
+    await this.commService.delete(userId,commentId);
     this.comments = this.comments.filter(comment => comment.id !== commentId);
     console.log('Komment sikeresen törölve!');
   }
@@ -143,8 +150,9 @@ export class PopupComponent implements OnInit, OnChanges {
     })
    }
 
-    this.uploadService.deleteImage(this.data.id, this.data.imageUrl, this.user.id);
+    this.uploadService.deleteImage(this.data.id, this.data.imageUrl, this.data.userId);
     this.onNoClick();
+
   }
 
   async onAddFavorit() {
@@ -223,8 +231,6 @@ export class PopupComponent implements OnInit, OnChanges {
       this.router.navigate([currentUrl]);
     });
   }
-
-  
 
 
 }

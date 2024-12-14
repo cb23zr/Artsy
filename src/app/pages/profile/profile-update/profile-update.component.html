@@ -2,7 +2,7 @@
     <h1>{{ 'updateIntro' | translate }}</h1>
     <form [formGroup]="introForm">
         <div>
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label for="intro">{{ 'intro' | translate }}:</mat-label>
                 <textarea matInput rows="7" cols="100" formControlName="intro"></textarea>
             </mat-form-field>

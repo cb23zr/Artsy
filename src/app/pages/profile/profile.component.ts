@@ -36,6 +36,8 @@ export class ProfileComponent implements OnInit{
   following: string[] = [];
   ownProfile:boolean = false; 
   routeParamsSub!: Subscription;
+  actualid!: string;
+  sortedlist!: any[];
 
 
 constructor(public dialog: MatDialog, private userService: UserService,
@@ -71,22 +73,7 @@ constructor(public dialog: MatDialog, private userService: UserService,
             });
       
             try {
-              const documents = await this.service.getDocuments();
-              this.imageList = [];
-      
-              documents.forEach((doc) => {
-                const url = doc.get("imageurl");
-                const id = doc.get('id');
-                const uname = doc.get('username');
-                const date = doc.get('date');
-                const caption = doc.get('caption');
-      
-                if (uname === this.user.username) {
-                  if (url) {
-                    this.imageList.push({ id, url, date, caption});
-                  }
-                }
-              });
+              await this.loadImg();
             } catch (error) {
               console.error('Hiba: ', error);
               this.router.navigate(['/not-found']);
@@ -162,16 +149,38 @@ loadDataByID(uid:string){
   });
 }
 
-openDialog(id: string, imageurl:string, date: Timestamp, caption: string, username: string): void {
+  async loadImg(){
+  const documents = await this.service.getDocuments();
+  this.imageList = [];
+
+  documents.forEach((doc) => {
+    const url = doc.get("imageurl");
+    const id = doc.get('id');
+    const uname = doc.get('username');
+    const date = doc.get('date');
+    const caption = doc.get('caption');
+
+    if (uname === this.user.username) {
+      if (url) {
+        this.imageList.push({ id, url, date, caption});
+        this.sortedlist =this.imageList.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+      }
+    }
+  });
+}
+
+openDialog(id: string, imageurl:string, date: Timestamp, caption: string, username: string, userId: string): void {
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
   if(user){
     const actualDate =date.toDate();
     const dialogRef = this.dialog.open(PopupComponent, {
-      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate, caption: caption, username: username},
+      data: {id: id ,name: this.name, imageUrl: imageurl, date: actualDate, caption: caption, username: username, userId: userId},
   });
 
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed', result);
+    //this.loadImg();
   });
   }
 }
@@ -186,35 +195,54 @@ openFollowingDialog(){
 
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed', result);
+    
   });
   }
 }
 
 openFollowerDialog(){
   const user = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
-  if(user){
-    console.log(this.ownProfile)
-    const dialogRef = this.dialog.open(FollowerComponent, {
-      data: {followedby:this.followedby, username: this.name, uid: user.uid,own: this.ownProfile}
-  });
+  this.userService.getByIdObservable(user.uid).subscribe(data =>{
+    if(data){
+      const username = data.username;
 
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed', result);
-  });
-  }
+      this.userService.getByUsername(this.name).subscribe(actualdata =>{
+        if(actualdata){
+          this.actualid = actualdata.id;
+
+          if(user){
+            console.log(this.ownProfile)
+            const dialogRef = this.dialog.open(FollowerComponent, {
+              data: {followedby:this.followedby, username: this.name, uid: user.uid, own: this.ownProfile, actualid: this.actualid}
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed', result);
+            
+          });
+        }
+
+
+        }
+      });
+    
+      
+  } 
+})
 }
 
 async follow(){
   const loggedin = JSON.parse(localStorage.getItem('user') as string) as firebase.default.User;
+  
   if (this.user) {
     if (this.isFollowed) {
-      await this.followService.unFollow(loggedin.uid, this.user.username);
+      
+      await this.followService.unFollow(loggedin.uid, this.user.username, this.user.id);
       this.isFollowed = false;
       this.followerCount--;
       this.onChange(loggedin.uid);
       console.log('User successfully removed from following!');
       
-    } else {
+    } else if(this.isFollowed == false) {
       await this.followService.addFavorite(loggedin.uid, this.user.username);
       this.isFollowed = true;
       this.followerCount++;  

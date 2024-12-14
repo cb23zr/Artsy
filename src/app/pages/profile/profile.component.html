@@ -3,27 +3,30 @@
     <mat-card-header>
       <mat-card-title *ngIf="user" >{{user.username }}</mat-card-title>
     </mat-card-header>
-
     <mat-card-content *ngIf="user">
-        <div>{{user.intro ? user.intro : "intro" | translate }}
-          <button *ngIf="ownProfile" mat-button (click)="updateIntro(user.id, user.intro, user.username)">{{ 'update' | translate }}</button>
+      <p><mat-icon>email</mat-icon>{{user.email }}</p>
+      <div class="follow">
+        <button mat-stroked-button (click)="openFollowerDialog()">
+          {{ 'followers' | translate }} {{ followerCount }}
+        </button>
+        <button mat-stroked-button (click)="openFollowingDialog()">
+          {{ 'followingUsers' | translate }} {{ followingCount }}
+        </button>
+      </div>
+        <div id="intro">{{user.intro ? user.intro : "intro" | translate }}
+          <button id="update" *ngIf="ownProfile" mat-raised-button (click)="updateIntro(user.id, user.intro, user.username)">{{ 'update' | translate }}</button>
         </div>
-        <p><mat-icon>email</mat-icon>{{user.email }}</p><br><br>
-        <button *ngIf="!loggedinprofile" mat-flat-button (click)="follow()">{{isFollowed ? ('unfollow' | translate): 'follow' | translate}}</button>
-        <div (click)="openFollowerDialog()">
-          {{ 'followers' | translate }}:{{ followerCount }}
-        </div>
-        <div (click)="openFollowingDialog()">
-          {{ 'followingUsers' | translate }}:{{ followingCount }}
-        </div>
-        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/img-collections'">{{ 'collections' | translate }}</button>
-        <button *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/upload-image'">{{ 'imgUpload' | translate }}</button>
+        <button id="followuser" *ngIf="!loggedinprofile" mat-flat-button color="accent" (click)="follow()">{{isFollowed ? ('unfollow' | translate): 'follow' | translate}}</button>
+        <button class="normal-button" *ngIf="loggedinprofile" mat-raised-button color="accent" type="button" [routerLink]="'/img-collections'">{{ 'collections' | translate }}</button>
+        <button class="normal-button"*ngIf="loggedinprofile" mat-raised-button color="primary" type="button" [routerLink]="'/upload-image'">{{ 'imgUpload' | translate }}</button>
 
         <div class="image-container">
-          <img class = "uploads" *ngFor="let image of imageList" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.date, image.caption, user.username)">
+          <img class = "uploads" *ngFor="let image of sortedlist" [src]="image.url" alt="Image" (click)="openDialog(image.id,image.url,image.date, image.caption, user.username, image.userId)">
         </div>
-        <button *ngIf="ownProfile" mat-button (click)="deleteProfile()">{{ 'deleteUser' | translate }}</button>
     </mat-card-content>
+    <mat-card-footer>
+      <button id="delete" *ngIf="ownProfile" mat-button (click)="deleteProfile()">{{ 'deleteUser' | translate }}</button>
+    </mat-card-footer>
   </mat-card>
 </div>
 

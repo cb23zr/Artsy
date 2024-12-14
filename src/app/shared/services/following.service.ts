@@ -131,7 +131,50 @@ export class FollowingService {
     }
   }
 
-  async unFollow(userId: string, userName: string): Promise<void>{
+  async unFollow(userId: string, userName: string, otheruserId: string): Promise<void>{
+    const otherUserRef = collection(this.db, "users");
+    const ouq = query(otherUserRef, where('id', '==', otheruserId));
+    const otherUserDoc = await getDocs(ouq);
+    if (!otherUserDoc.empty) {
+      const otherUserDocs = otherUserDoc.docs[0];
+      const otherUserDocRef = doc(this.db, "users", otherUserDocs.id);
+
+      try
+      {await updateDoc(otherUserDocRef, {
+        followedby: arrayRemove(userId),
+      });
+      console.log("siker")
+    }catch{
+      console.error("Nem működöm followedby" + userId);
+    }
+      await this.updateFollowerCount(userId,userName, -1);
+    } else {
+      console.error("Felhasználó nem található");
+    }
+
+    const userRef = collection(this.db, "users");
+    const q = query(userRef, where('id', '==', userId));
+    const userDocs = await getDocs(q);
+
+    if (!userDocs.empty) {
+      const userDoc = userDocs.docs[0];
+      const userDocRef = doc(this.db, "users", userDoc.id);
+
+      try{
+      await updateDoc(userDocRef, {
+        following: arrayRemove(userName),
+      });
+      console.log("siker")
+    }catch{
+      console.error("Nem tudlak törölni following" + userName);
+    }
+    } else {
+      console.error("Felhasználó nem található");
+    }
+
+  }
+
+  async deleteFollower(userId: string, userName: string, otherid: string){
     const otherUserRef = collection(this.db, "users");
     const ouq = query(otherUserRef, where('id', '==', userId));
     const otherUserDoc = await getDocs(ouq);
@@ -139,9 +182,13 @@ export class FollowingService {
       const otherUserDocs = otherUserDoc.docs[0];
       const otherUserDocRef = doc(this.db, "users", otherUserDocs.id);
 
+      try{
       await updateDoc(otherUserDocRef, {
         following: arrayRemove(userName),
       });
+    }catch{
+      console.error("Nem tudlak törölni following" + userName);
+    }
       await this.updateFollowerCount(userId,userName, -1);
     } else {
       console.error("Felhasználó nem található");
@@ -155,13 +202,16 @@ export class FollowingService {
       const userDoc = userDocs.docs[0];
       const userDocRef = doc(this.db, "users", userDoc.id);
 
+      try{
       await updateDoc(userDocRef, {
         followedby: arrayRemove(userId),
       });
+      }catch{
+        console.error("Nem tudlak törölni followedby" + userId);
+      }
     } else {
       console.error("Felhasználó nem található");
     }
-
   }
 
 }

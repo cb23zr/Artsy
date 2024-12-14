@@ -8,16 +8,16 @@
                 <div class="form-group">
                     <input style="display: none;" type="file" class="form-control" accept="image/*" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
                     <button mat-raised-button color="primary" type="button" (click)="fileUploader.click()">{{ 'chooseFile' | translate }}</button>
-                    <div class="text-required" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">{{ 'required' | translate }}</div>
+                    <div class="text-required" *ngIf="isSubmitted && formControls.imageUrl.errors?.['required']">{{ 'requiredField' | translate }}</div>
                 </div><br>
                 <div class="form-group">
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <input matInput class="form-control" formControlName="caption" placeholder="{{ 'caption' | translate }}">
                 </mat-form-field>
-                    <div class="text-required" *ngIf="isSubmitted && formControls.caption.errors?.['required']">{{ 'required' | translate }}</div>
+                <div class="text-required" *ngIf="isSubmitted && formControls.caption.errors?.['required']">{{ 'requiredField' | translate }}</div>
                 </div>
                 <div class="form-group">
-                    <mat-form-field >
+                    <mat-form-field appearance="outline">
                     <mat-select  class="category" formControlName="category">
                         <mat-option class="custom-selected-option" value="Animal">{{ 'animal' | translate }}</mat-option>
                         <mat-option class="custom-selected-option" value="Person">{{ 'human' | translate }}</mat-option>
@@ -34,9 +34,10 @@
                     <div class="buttons">
                         <a style="display: none;" routerLink="/main" class="btn" #frontPage>Menj a főoldalra</a>
                         <button mat-raised-button color="accent" type="button" (click)="frontPage.click()">{{ 'mainPage' | translate }}</button>
-                        <button mat-raised-button color="accent" type="submit" class="btn btn-success float-right">{{ 'upload' | translate }}</button><br>
-                        <button *ngIf="user?.username" mat-button [routerLink]="['/profile',user.username]">{{ 'back' | translate }}</button>
+                        <button mat-raised-button color="accent" type="submit" class="btn btn-success float-right">{{ 'upload' | translate }}</button>
+                        
                     </div>
+                    <button *ngIf="user?.username" mat-button [routerLink]="['/profile',user.username]">{{ 'back' | translate }}</button>
                 </div>
             </form>
             
